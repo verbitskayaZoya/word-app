@@ -2,9 +2,9 @@
 'use client'
 import Image from "next/image";
 import { useState } from 'react';
-import { sql } from '@vercel/postgres';
-import { NextResponse } from 'next/server';
-
+// import { sql } from '@vercel/postgres';
+// import { NextResponse } from 'next/server';
+import { create } from '/app/actions'
 
 export default function Home() {
 const [title, setTitle] = useState()
@@ -30,17 +30,17 @@ async function addCard() {
   function Card() {
     const [wordInputValue, setWordInputValue] = useState("")
 
-    async function saveCard() {
-      try {
-        console.log(wordInputValue)
-        // if (!petName || !ownerName) throw new Error('Pet and owner names required');
-        await sql`INSERT INTO Cards (Name, Definition) VALUES (${wordInputValue}, ${wordInputValue});`;
-      } catch (error) {
-        console.log(error)
-        return NextResponse.json({ error }, { status: 500 });
-      }
+  //   async function saveCard() {
+  //     try {
+  //       console.log(wordInputValue)
+  //       // if (!petName || !ownerName) throw new Error('Pet and owner names required');
+  //       await sql`INSERT INTO Cards (Name, Definition) VALUES (${wordInputValue}, ${wordInputValue});`;
+  //     } catch (error) {
+  //       console.log(error)
+  //       return NextResponse.json({ error }, { status: 500 });
+  //     }
      
-  }
+  // }
 
     return (
       <div>
@@ -51,7 +51,7 @@ async function addCard() {
         value = { wordInputValue }
         onChange = {e => setWordInputValue(e.target.value) } 
        />
-     <button className="w-2/4 border-4 bg-sky-500 m" onClick = {saveCard}> Save </button> 
+     <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => create(wordInputValue)} > Save </button> 
      </div>
      )
   }
