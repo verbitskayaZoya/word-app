@@ -2,16 +2,14 @@
 'use client'
 import Image from "next/image";
 import { useState } from 'react';
-// import { sql } from '@vercel/postgres';
-// import { NextResponse } from 'next/server';
 import { create } from '/app/actions'
+
 
 export default function Home() {
 const [title, setTitle] = useState()
 const [card, setCard] = useState(false)
- 
 
-async function addCard() {
+function addCard() {
   setCard(true)                                        
 }
 
@@ -22,6 +20,8 @@ async function addCard() {
         <div id="card-container">
           {card ? < Card />  : ''} 
         </div> 
+        <button className="w-2/4 border-4 bg-sky-500 m " onClick = {displayCards} > Show my cards </button>
+        < CardsDisplay />
     </div>
     )
   }
@@ -29,18 +29,8 @@ async function addCard() {
 
   function Card() {
     const [wordInputValue, setWordInputValue] = useState("")
+    const [definitionInputValue, setDefinitionInputValue] = useState("")
 
-  //   async function saveCard() {
-  //     try {
-  //       console.log(wordInputValue)
-  //       // if (!petName || !ownerName) throw new Error('Pet and owner names required');
-  //       await sql`INSERT INTO Cards (Name, Definition) VALUES (${wordInputValue}, ${wordInputValue});`;
-  //     } catch (error) {
-  //       console.log(error)
-  //       return NextResponse.json({ error }, { status: 500 });
-  //     }
-     
-  // }
 
     return (
       <div>
@@ -51,12 +41,49 @@ async function addCard() {
         value = { wordInputValue }
         onChange = {e => setWordInputValue(e.target.value) } 
        />
-     <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => create(wordInputValue)} > Save </button> 
+       <input id="input-word" 
+        type="text" 
+        placeholder="Type your example here" 
+        className="border-2 border-black" 
+        value = { definitionInputValue }
+        onChange = {e => setDefinitionInputValue(e.target.value) } 
+       />
+     <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => create(wordInputValue, definitionInputValue)} > Save </button> 
      </div>
      )
   }
 
 
+function CardsDisplay() {
+
+async function displayCards() {
+  const res = await fetch('http://localhost:3000/api/add-pet', {
+    headers: {
+      // 'Content-Type': 'application/json',
+      // 'API-Key': process.env.DATA_API_KEY,
+    },
+  })
+   data = await res.json()
+  console.log(data)
+}
 
 
+  // return data.pets.rows
+  return (
+    <div>
+      <div> Hello </div>
+    </div>
+  )
+
+}
  
+async function displayCards() {
+  const res = await fetch('http://localhost:3000/api/add-pet', {
+    headers: {
+      // 'Content-Type': 'application/json',
+      // 'API-Key': process.env.DATA_API_KEY,
+    },
+  })
+  const data = await res.json()
+  console.log(await data.cards.rows[0])
+}
