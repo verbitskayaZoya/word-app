@@ -20,7 +20,7 @@ function addCard() {
         <div id="card-container">
           {card ? < Card />  : ''} 
         </div> 
-        <button className="w-2/4 border-4 bg-sky-500 m " onClick = {displayCards} > Show my cards </button>
+        {/* <button className="w-2/4 border-4 bg-sky-500 m " onClick = {displayCards} > Show my cards </button> */}
         < CardsDisplay />
     </div>
     )
@@ -54,7 +54,7 @@ function addCard() {
   }
 
 
-function CardsDisplay() {
+async function CardsDisplay() {
 
 async function displayCards() {
   const res = await fetch('http://localhost:3000/api/add-pet', {
@@ -63,27 +63,27 @@ async function displayCards() {
       // 'API-Key': process.env.DATA_API_KEY,
     },
   })
-   data = await res.json()
-  console.log(data)
+   const data = await res.json()
+  return data
 }
 
+const data = await displayCards()
 
-  // return data.pets.rows
   return (
     <div>
-      <div> Hello </div>
+      <div> {data.cards.rows[0].name} </div>
     </div>
   )
 
 }
  
-async function displayCards() {
-  const res = await fetch('http://localhost:3000/api/add-pet', {
-    headers: {
-      // 'Content-Type': 'application/json',
-      // 'API-Key': process.env.DATA_API_KEY,
-    },
-  })
-  const data = await res.json()
-  console.log(await data.cards.rows[0])
-}
+// async function displayCards() {
+//   const res = await fetch('http://localhost:3000/api/add-pet', {
+//     headers: {
+//       // 'Content-Type': 'application/json',
+//       // 'API-Key': process.env.DATA_API_KEY,
+//     },
+//   })
+//   const data = await res.json()
+//   console.log(await data.cards.rows[0])
+// }
