@@ -2,14 +2,15 @@ import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
  
 
-export async function GET() {
-  try {
-    // await sql`SELECT * FROM Cards` 
-      const cards = await sql`SELECT * FROM Cards;`;
-  return NextResponse.json({ cards }, { status: 200 });
-  } catch (error) {
-      return NextResponse.json({ error }, { status: 500 });
-  }
+// export async function GET() {
+//   try {
+//     // await sql`SELECT * FROM Cards` 
+//     const cards = await sql`SELECT * FROM Cards;`;
+//     console.log("GET")
+//     return NextResponse.json({ cards }, { status: 200 });
+//   } catch (error) {
+//       return NextResponse.json({ error }, { status: 500 });
+//   }
 
 }
 // export async function GET(request) {

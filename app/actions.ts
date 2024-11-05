@@ -11,13 +11,16 @@ export async function create(wordValue, definitionValue ) {
             }
 }
 
+export async function select() {
+    try {
+            const res = await sql`select * from cards`
+            const rows = await res.rows
+            return rows
+        } catch (error) {
+            console.log("eror")
+            return NextResponse.json({ error }, { status: 500 });
+        }
+}
 
-// export async function display() {
-//     try {
-// //       return await sql`SELECT * FROM Cards` 
 
-//     } catch (error) {
-//         return NextResponse.json({ error }, { status: 500 });
-//       }
-// }
 
