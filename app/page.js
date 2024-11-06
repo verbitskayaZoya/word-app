@@ -23,16 +23,16 @@ export default function Home() {
         {card ? < Card />  : ''} 
       </div> 
       {/* <button className="w-2/4 border-4 bg-sky-500 m " onClick = {displayCards} > Show my cards </button> */}
-     {/* <Suspense fallback={<Loading />} > */}
+     <Suspense fallback={<Loading />} >
       < CardsDisplay />
-    {/* </Suspense> */}
+    </Suspense>
     </div>
   )
 }
 
-// function Loading() {
-//   return "hello"
-// }
+function Loading() {
+  return "hello"
+}
 
 function CardsDisplay() {
 const [data, setData] = useState([{name: "", definition: "" }])
@@ -52,8 +52,9 @@ const [data, setData] = useState([{name: "", definition: "" }])
   
   const cards = data.map((item) => {
    return ( 
-   <div key={item.id}>
+   <div className="flex" key={item.id}>
       <p> {item.name} </p>
+      <p> {item.definition} </p>
     </div>
    )
   })
