@@ -2,7 +2,7 @@
 'use client'
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { create, select } from '/app/actions'
+import { create, select, removeItems } from '/app/actions'
 import { Suspense } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
@@ -31,7 +31,7 @@ export default function Home() {
 }
 
 function Loading() {
-  return "hello"
+  return "Loading...."
 }
 
 function CardsDisplay() {
@@ -52,9 +52,10 @@ const [data, setData] = useState([{name: "", definition: "" }])
   
   const cards = data.map((item) => {
    return ( 
-   <div className="flex" key={item.id}>
+   <div className="flex justify-between" key={item.id} id={item.id}>
       <p> {item.name} </p>
       <p> {item.definition} </p>
+      <button onClick = {(e) => removeItems(e.target.parentElement.id ) }> delete </button>
     </div>
    )
   })
@@ -63,6 +64,16 @@ const [data, setData] = useState([{name: "", definition: "" }])
     <div>
       {cards}
     </div>
+
+    //  <div className="flex"  >
+    //   {data.map((card) => {
+    //     <div>
+    //       <p> {card.name} </p>
+    //       <p > {card.definition} </p>
+    //     </div>
+    //   }
+    //    ) }
+    // </div> 
   )
 }
 

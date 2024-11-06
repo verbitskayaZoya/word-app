@@ -22,5 +22,14 @@ export async function select() {
         }
 }
 
+export async function removeItems(id) {
+    try {
+
+        await sql`DELETE FROM Cards WHERE Id = ${id} ` 
+        } catch (error) {
+            console.log("eror")
+            return NextResponse.json({ error }, { status: 500 });
+        }
+}
 
 
