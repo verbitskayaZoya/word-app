@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { create, select } from '/app/actions'
 import { Suspense } from 'react'
-
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
     setCard(true)                                        
   }
 
-  console.log("Home")
   return (
     <div className= "flex flex-col items-center ">
       <h1 className= "text-center mt-6" id="title"> My word app </h1>
@@ -38,13 +36,11 @@ export function Loading() {
 
 function CardsDisplay() {
 const [data, setData] = useState([{name: "", definition: "" }])
-  console.log("Component Cards")
-  
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await select()
-        console.log(result)
         setData(result)
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -54,9 +50,9 @@ const [data, setData] = useState([{name: "", definition: "" }])
   }, []) 
   
    return (
-    <div>
-      {data.map((card) => <div> {card.name} </div> ) }
-      {data.map((card) => <div> {card.definition} </div> ) }
+    <div key= {data.map((card) => {card.id} ) }>
+      {data.map((card) => <div key= {uuidv4() }> {card.name} </div> ) }
+      {data.map((card) => <div key= {uuidv4() }> {card.definition} </div> ) }
     </div> 
    )
    
@@ -65,20 +61,12 @@ const [data, setData] = useState([{name: "", definition: "" }])
 
 
 
- 
-
-
-
-
-
-
-
 
 function Card() {
   const [wordInputValue, setWordInputValue] = useState("")
   const [definitionInputValue, setDefinitionInputValue] = useState("")
+  const id = uuidv4()
 
-  console.log("Card")
   return (
     <div>
     <input id="input-word" 
@@ -95,7 +83,7 @@ function Card() {
       value = { definitionInputValue }
       onChange = {e => setDefinitionInputValue(e.target.value) } 
      />
-   <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => create(wordInputValue, definitionInputValue)} > Save </button> 
+   <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => create(id, wordInputValue, definitionInputValue) } > Save </button> 
    </div>
    )
 }
