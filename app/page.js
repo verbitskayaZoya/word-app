@@ -23,20 +23,21 @@ export default function Home() {
         {card ? < Card />  : ''} 
       </div> 
       {/* <button className="w-2/4 border-4 bg-sky-500 m " onClick = {displayCards} > Show my cards </button> */}
-     <Suspense fallback={<Loading />} >
+     {/* <Suspense fallback={<Loading />} > */}
       < CardsDisplay />
-    </Suspense>
+    {/* </Suspense> */}
     </div>
   )
 }
 
-function Loading() {
-  return "Loading ...."
-}
+// function Loading() {
+//   return "hello"
+// }
 
 function CardsDisplay() {
 const [data, setData] = useState([{name: "", definition: "" }])
- 
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,18 +50,32 @@ const [data, setData] = useState([{name: "", definition: "" }])
     fetchData()
   }, []) 
   
-   return (
-    <div key= {data.map((card) => {card.id} ) }>
-      {data.map((card) => <div key= {uuidv4() }> {card.name} </div> ) }
-      {data.map((card) => <div key= {uuidv4() }> {card.definition} </div> ) }
-    </div> 
+  const cards = data.map((item) => {
+   return ( 
+   <div key={item.id}>
+      <p> {item.name} </p>
+    </div>
    )
+  })
+
+  return ( 
+    <div>
+      {cards}
+    </div>
+  )
+}
+
+
    
-  }
-
-
-
-
+        // {data.map((card) => <div key= { card.id } className="flex">
+        //                       <p key= { uuidv4() }> {card.name} </p>
+        //                       <p key= { uuidv4() }> {card.definition} </p>
+        //                      </div>)}
+    // <div className="flex" key= {data.map((card) => {card.id} ) }>
+    //   {data.map((card) => <p key= {uuidv4() }> {card.name} </p> ) }
+    //   {data.map((card) => <p key= {uuidv4() }> {card.definition} </p> ) }
+    // </div> 
+   
 
 function Card() {
   const [wordInputValue, setWordInputValue] = useState("")
