@@ -30,7 +30,7 @@ export default function Home() {
   )
 }
 
-export function Loading() {
+function Loading() {
   return "Loading ...."
 }
 
