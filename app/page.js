@@ -12,6 +12,7 @@ export default function Home() {
     <div className= "flex flex-col items-center ">
       <h1 className= "text-center mt-6" id="title"> My word app </h1>
       <Card />
+      <PlayGame />
     </div>
   )
 }
@@ -84,3 +85,86 @@ function Card() {
   </div>
     )
 }
+
+function PlayGame() {
+  const [data, setData] = useState([])
+  const [isClicked, setIsClicked] = useState(false)
+
+  const fetchData = async () => {
+ 
+    try {
+      const result = await select()
+      setData(result)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, []) 
+ 
+ 
+
+  function renderCard() {
+
+    if(data.length > 0) setIsClicked(true)
+    
+  }
+   
+    
+  return (
+    <div>
+      <button onClick={renderCard} > play a game </button>
+      <div>
+        {isClicked ? <Word definition = {data[0].definition} name = {data[0].name}/> : ''}
+      </div>
+    </div>
+  )
+}
+
+function Word({definition, name}) {
+  const [nameInputValue, setNameInputValue] = useState("")
+  const [answer, setAnswer] = useState()
+  const [isVisible, setIsVisible] = useState(false)
+
+  function check() {
+    name === nameInputValue ? setAnswer(true) : setAnswer(false)
+    setIsVisible(true)
+    }
+ 
+  return (
+    <div>
+      <div> {definition} </div>
+      <input
+      type="text"
+      placeholder="type the word"
+      value = {nameInputValue}
+      onChange = {e => setNameInputValue(e.target.value) } 
+      />
+      <button onClick={check}> check </button>
+      <div>
+        {!isVisible ? " " : answer ? < CorrectAnswer/> : <IncorrectAnswer />}
+      </div>
+    </div>
+  )
+}
+
+function CorrectAnswer() {
+  return (
+    <div>
+      Correct, great job!
+    </div>
+  )
+}
+
+function IncorrectAnswer() {
+  return (
+    <div>
+      Not quite right
+    </div>
+  )
+}
+
+
+
