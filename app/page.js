@@ -23,20 +23,17 @@ export default function Home() {
         {card ? < Card />  : ''} 
       </div> 
       {/* <button className="w-2/4 border-4 bg-sky-500 m " onClick = {displayCards} > Show my cards </button> */}
-     <Suspense fallback={<Loading />} >
+ 
       < CardsDisplay />
-    </Suspense>
+
     </div>
   )
 }
 
-function Loading() {
-  return "Loading...."
-}
+
 
 function CardsDisplay() {
-const [data, setData] = useState([{name: "", definition: "" }])
-
+const [data, setData] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,44 +46,32 @@ const [data, setData] = useState([{name: "", definition: "" }])
     }
     fetchData()
   }, []) 
-  
-  const cards = data.map((item) => {
+ 
    return ( 
-   <div className="flex justify-between" key={item.id} id={item.id}>
-      <p> {item.name} </p>
-      <p> {item.definition} </p>
-      <button onClick = {(e) => removeItems(e.target.parentElement.id ) }> delete </button>
-    </div>
-   )
-  })
-
-  return ( 
     <div>
-      {cards}
+      {data && data.length > 0 ? (
+        data.map((item) => {
+         return (
+            <div className="flex justify-between" key={item.id} id={item.id}>
+                <p> {item.name} </p>
+                <p> {item.definition} </p>
+                <button onClick = {(e) => removeItems(e.target.parentElement.id ) }> delete </button> 
+            </div>
+          )
+        })
+      ) : (
+        <p> Loading .... </p>
+        )
+      }
     </div>
+    )
+  }
 
-    //  <div className="flex"  >
-    //   {data.map((card) => {
-    //     <div>
-    //       <p> {card.name} </p>
-    //       <p > {card.definition} </p>
-    //     </div>
-    //   }
-    //    ) }
-    // </div> 
-  )
-}
+ 
+
 
 
    
-        // {data.map((card) => <div key= { card.id } className="flex">
-        //                       <p key= { uuidv4() }> {card.name} </p>
-        //                       <p key= { uuidv4() }> {card.definition} </p>
-        //                      </div>)}
-    // <div className="flex" key= {data.map((card) => {card.id} ) }>
-    //   {data.map((card) => <p key= {uuidv4() }> {card.name} </p> ) }
-    //   {data.map((card) => <p key= {uuidv4() }> {card.definition} </p> ) }
-    // </div> 
    
 
 function Card() {
