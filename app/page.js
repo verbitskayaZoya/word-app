@@ -6,6 +6,7 @@ import { create, select, removeItems } from '/app/actions'
 import { v4 as uuidv4 } from 'uuid';
 
 
+
 export default function Home() {
 
   return (
@@ -87,9 +88,34 @@ function Card() {
 }
 
 function PlayGame() {
-  const [data, setData] = useState([])
   const [isClicked, setIsClicked] = useState(false)
 
+  function renderInstructions() {
+    setIsClicked(true)
+  }
+
+  return (
+    <div>
+      <button onClick={renderInstructions} > play a game </button>
+      {isClicked ? <GameExplanation /> : ''}
+    </div>
+  )
+}
+
+
+function GameExplanation() {
+  const [data, setData] = useState([])
+  const [isClicked, setIsClicked] = useState(false)
+  const [index, setIndex] = useState(-1)
+
+  function renderGame() {
+    if(data.length > 0) {
+      setIsClicked(true)
+      if(index < data.length) {
+        setIndex(index + 1)
+      }
+    }
+  }
   const fetchData = async () => {
  
     try {
@@ -103,27 +129,21 @@ function PlayGame() {
   useEffect(() => {
     fetchData()
   }, []) 
- 
- 
 
-  function renderCard() {
-
-    if(data.length > 0) setIsClicked(true)
-    
-  }
-   
-    
   return (
     <div>
-      <button onClick={renderCard} > play a game </button>
-      <div>
-        {isClicked ? <Word definition = {data[0].definition} name = {data[0].name}/> : ''}
+      <div> 
+        <p> You will get a definition, type the word </p>
+        <p> To start your game, click Get card button </p>
       </div>
+      <button className="w-2/4 border-4 bg-sky-500 m" onClick={renderGame}> GET CARD </button>
+        {!isClicked ? " " : index === data.length ? <div> Sorry, all the cards are played </div>  : <Word name = {data[index].name} definition = {data[index].definition }/> }
     </div>
   )
 }
 
-function Word({definition, name}) {
+function Word({name, definition, }) {
+
   const [nameInputValue, setNameInputValue] = useState("")
   const [answer, setAnswer] = useState()
   const [isVisible, setIsVisible] = useState(false)
@@ -142,7 +162,9 @@ function Word({definition, name}) {
       value = {nameInputValue}
       onChange = {e => setNameInputValue(e.target.value) } 
       />
-      <button onClick={check}> check </button>
+      <button onClick={() => {
+            check()
+            setNameInputValue("") }}> check </button>
       <div>
         {!isVisible ? " " : answer ? < CorrectAnswer/> : <IncorrectAnswer />}
       </div>
