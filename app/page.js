@@ -57,7 +57,11 @@ function Card() {
           onChange = {e => setDefinitionInputValue(e.target.value) } 
         />
         <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => { 
-                create(id, wordInputValue, definitionInputValue) 
+                if(wordInputValue === "" || definitionInputValue === "") {
+                  alert("Make sure your word and example are entered")
+                } else {
+                  create(id, wordInputValue.toLowerCase(), definitionInputValue) 
+                }
                 setWordInputValue('')
                 setDefinitionInputValue('')
                 fetchData()
@@ -106,14 +110,11 @@ function PlayGame() {
 function GameExplanation() {
   const [data, setData] = useState([])
   const [isClicked, setIsClicked] = useState(false)
-  const [index, setIndex] = useState(-1)
+ 
 
   function renderGame() {
     if(data.length > 0) {
       setIsClicked(true)
-      if(index < data.length) {
-        setIndex(index + 1)
-      }
     }
   }
   const fetchData = async () => {
@@ -134,40 +135,66 @@ function GameExplanation() {
     <div>
       <div> 
         <p> You will get a definition, type the word </p>
-        <p> To start your game, click Get card button </p>
+        <p> To start your game, click START GAME button </p>
       </div>
-      <button className="w-2/4 border-4 bg-sky-500 m" onClick={renderGame}> GET CARD </button>
-        {!isClicked ? " " : index === data.length ? <div> Sorry, all the cards are played </div>  : <Word name = {data[index].name} definition = {data[index].definition }/> }
+      <button className="w-2/4 border-4 bg-sky-500 m" onClick={renderGame}> START GAME </button>
+        {isClicked ? <Word arr = {data}/> : '' }
     </div>
   )
 }
 
-function Word({name, definition, }) {
+function Word({arr}) {
 
+ const  [index, setIndex] = useState(0)
   const [nameInputValue, setNameInputValue] = useState("")
   const [answer, setAnswer] = useState()
   const [isVisible, setIsVisible] = useState(false)
+  const [data, setData] = useState(arr)
+  const [answerValue, setAnswerValue] = useState('')
 
-  function check() {
-    name === nameInputValue ? setAnswer(true) : setAnswer(false)
+
+  function check() {  
     setIsVisible(true)
-    }
+   setAnswerValue(data[index].name)
+    if(data[index].name === nameInputValue.toLowerCase()) {
+      setAnswer(true)
+      const result = () => {
+       return data.filter((item) => {
+        return item.name !== data[index].name
+       })
+      }
+       setData(result()   )
+    } else {
+        setAnswer(false)
+      } 
+  }
  
   return (
     <div>
-      <div> {definition} </div>
+      {data.length == 0 ?  (
+        <div> Well done! Game is finished </div>
+      )  : (
+      <>
+      <div>  { nameInputValue == "" ? data[index].definition : null } </div>
       <input
       type="text"
       placeholder="type the word"
       value = {nameInputValue}
       onChange = {e => setNameInputValue(e.target.value) } 
       />
+   
       <button onClick={() => {
-            check()
-            setNameInputValue("") }}> check </button>
+            check() }}> check </button>
       <div>
-        {!isVisible ? " " : answer ? < CorrectAnswer/> : <IncorrectAnswer />}
-      </div>
+        {!isVisible ? " " : answer ? < CorrectAnswer /> : <IncorrectAnswer answer={answerValue} />}
+        {isVisible ? <button className="w-2/4 border-4 bg-sky-500 m" onClick={() => {
+                                setIndex(Math.floor(Math.random() * (data.length) ))
+                                setIsVisible(false) 
+                                setNameInputValue("")
+        }}> Next </button> : " "}
+      </div> 
+      </>
+    )}
     </div>
   )
 }
@@ -180,10 +207,10 @@ function CorrectAnswer() {
   )
 }
 
-function IncorrectAnswer() {
+function IncorrectAnswer({answer}) {
   return (
     <div>
-      Not quite right
+      Not quite right. The answer is {answer.toUpperCase()}. 
     </div>
   )
 }
