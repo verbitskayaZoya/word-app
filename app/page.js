@@ -60,7 +60,7 @@ function Card() {
                 if(wordInputValue === "" || definitionInputValue === "") {
                   alert("Make sure your word and example are entered")
                 } else {
-                  create(id, wordInputValue.toLowerCase(), definitionInputValue) 
+                  create(id, wordInputValue.toLowerCase(), definitionInputValue.toLowerCase()) 
                 }
                 setWordInputValue('')
                 setDefinitionInputValue('')
