@@ -10,8 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 export default function Home() {
 
   return (
-    <div className= "flex flex-col items-center ">
-      <h1 className= "text-center mt-6" id="title"> My word app </h1>
+    <div className= "flex flex-col items-center">
+      <h1 className= "text-center mt-6 mb-4" id="title"> My word app </h1>
       <Card />
       <PlayGame />
     </div>
@@ -41,22 +41,22 @@ function Card() {
  
    return ( 
     <div>
-      <div>
-        <input id="input-word" 
+      <div className="flex flex-col items-center gap-y-2 w-screen">
+        <input  
+          id="input-word" 
           type="text" 
           placeholder="Type your word here" 
-          className="border-2 border-black" 
+          className="border-2 border-black w-11/12" 
           value = { wordInputValue }
           onChange = {e => setWordInputValue(e.target.value) } 
         />
-        <input id="input-word" 
-          type="text" 
+        <textarea id="input-definition"
           placeholder="Type your example here" 
-          className="border-2 border-black" 
+          className="border-2 border-black w-11/12 h-20" 
           value = {definitionInputValue}
           onChange = {e => setDefinitionInputValue(e.target.value) } 
-        />
-        <button className="w-2/4 border-4 bg-sky-500 m" onClick = {() => { 
+        > </textarea>
+        <button className="border-4 bg-sky-500 m w-11/12" onClick = {() => { 
                 if(wordInputValue === "" || definitionInputValue === "") {
                   alert("Make sure your word and example are entered")
                 } else {
