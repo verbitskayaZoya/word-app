@@ -55,7 +55,7 @@ function Card() {
           className="border-2 border-black w-11/12 h-20" 
           value = {definitionInputValue}
           onChange = {e => setDefinitionInputValue(e.target.value) } 
-        > </textarea>
+        /> 
         <button className="border-4 bg-sky-500 m w-11/12" onClick = {() => { 
                 if(wordInputValue === "" || definitionInputValue === "") {
                   alert("Make sure your word and example are entered")
