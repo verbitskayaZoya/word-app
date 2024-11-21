@@ -25,3 +25,9 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .btn-primary {
+    @apply border-2 p-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 hover:bg-[#33C1B1] hover:font-bold;
+  }
+}

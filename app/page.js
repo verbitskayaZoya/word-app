@@ -8,22 +8,98 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export default function Home() {
-
+  const [pageNum, setPageNum] = useState(0)
   return (
-    <div className= "flex flex-col items-center bg-[#fdf4ec] text-[#140800] ">
-      <h1 className= "text-center mt-6 mb-4" id="title"> My word app </h1>
-      <Card />
-      <PlayGame />
+    <div className= "flex flex-col items-center bg-gradient-to-br from-[#fdf4ec] to-[#ffc592] text-[#140800] font-mono h-screen">
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
+      <div className="w-11/12 flex gap-2 justify-between mb-2">
+        <button className="btn-primary" 
+              onClick={() => {
+               setPageNum(0)
+               }} > My cards </button>
+        <button className="btn-primary" 
+              onClick={() => {
+               setPageNum(2)
+               }} > Add a card </button>
+        <button className="btn-primary" 
+              onClick={() => { setPageNum(1)
+               }} > Play a game </button>
+      </div>      
+      {pageNum === 0 ? <DisplayCards /> : ''}
+      {pageNum === 1 ? <GameExplanation /> : ''}
+      {pageNum === 2 ? <AddCard /> : ""}
     </div>
   )
 }
 
+// function PlayGame() {
+  // const [isClicked, setIsClicked] = useState(false)
+  // function renderInstructions() {
+  //   setIsClicked(true)
+  // }
 
-function Card() {
+//   return (
+//     <div className="w-screen flex flex-col items-center">
+//       <button className="mt-8 p-2 border-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 mx-auto" 
+//               onClick={() => {
+//                renderInstructions()
+//                }} > Play a game </button>
+//       {isClicked ? <GameExplanation /> : ''}
+//     </div>
+//   )
+// }
+
+// function AddCards() {
+// const [isClicked, setIsClicked] = useState(false)
+//   return (
+//     <div className="w-screen flex flex-col items-center">
+//       <button className="mt-8 p-2 border-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 mx-auto" 
+//               onClick={() => {
+//                setIsClicked(true)
+//                }} > Add a card </button>
+//       {isClicked ? <Card /> : ""}
+//     </div>
+//   )
+// }
+
+function AddCard() {
   const [wordInputValue, setWordInputValue] = useState("")
   const [definitionInputValue, setDefinitionInputValue] = useState("")
-  const [data, setData] = useState([])
   const id = uuidv4()
+
+  return ( 
+      <div className="flex flex-col items-center gap-y-2 w-screen">
+        <input  
+          id="input-word" 
+          type="text" 
+          placeholder="Type your word here" 
+          className="border-2 border-black w-11/12 rounded" 
+          value = { wordInputValue }
+          onChange = {e => setWordInputValue(e.target.value) } 
+        />
+        <textarea id="input-definition"
+          placeholder="Type your example here" 
+          className="border-2 border-black w-11/12 h-20 rounded" 
+          value = {definitionInputValue}
+          onChange = {e => setDefinitionInputValue(e.target.value) } 
+        /> 
+        <button className="btn-primary"
+         onClick = {() => { 
+                if(wordInputValue === "" || definitionInputValue === "") {
+                  alert("Make sure your word and example are entered")
+                } else {
+                  create(id, wordInputValue.toLowerCase(), definitionInputValue.toLowerCase()) 
+                }
+                setWordInputValue('')
+                setDefinitionInputValue('')
+                // fetchData()
+               }} > 
+        Save </button> 
+      </div>
+  )
+}
+function DisplayCards() {
+  const [data, setData] = useState([])
 
   const fetchData = async () => {
  
@@ -39,35 +115,7 @@ function Card() {
     fetchData()
   }, []) 
  
-   return ( 
-    <div>
-      <div className="flex flex-col items-center gap-y-2 w-screen">
-        <input  
-          id="input-word" 
-          type="text" 
-          placeholder="Type your word here" 
-          className="border-2 border-black w-11/12 rounded bg-[#fff3eb]" 
-          value = { wordInputValue }
-          onChange = {e => setWordInputValue(e.target.value) } 
-        />
-        <textarea id="input-definition"
-          placeholder="Type your example here" 
-          className="border-2 border-black w-11/12 h-20 rounded" 
-          value = {definitionInputValue}
-          onChange = {e => setDefinitionInputValue(e.target.value) } 
-        /> 
-        <button className="border-2 p-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12" onClick = {() => { 
-                if(wordInputValue === "" || definitionInputValue === "") {
-                  alert("Make sure your word and example are entered")
-                } else {
-                  create(id, wordInputValue.toLowerCase(), definitionInputValue.toLowerCase()) 
-                }
-                setWordInputValue('')
-                setDefinitionInputValue('')
-                fetchData()
-               }} > 
-        Save </button> 
-      </div>
+   return (
     <div className="flex flex-col items-center">
       {data && data.length > 0 ? (
         data.map((item) => {
@@ -87,24 +135,10 @@ function Card() {
         )
       }
     </div>
-  </div>
-    )
-}
-
-function PlayGame() {
-  const [isClicked, setIsClicked] = useState(false)
-
-  function renderInstructions() {
-    setIsClicked(true)
-  }
-
-  return (
-    <div className="w-screen flex flex-col items-center">
-      <button className="mt-8 p-2 border-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 mx-auto" onClick={renderInstructions} > Play a game </button>
-      {isClicked ? <GameExplanation /> : ''}
-    </div>
   )
 }
+
+
 
 
 function GameExplanation() {
@@ -137,7 +171,8 @@ function GameExplanation() {
         <p> You will get a definition, type the word </p>
         <p> To start your game, click START GAME button </p>
       </div>
-      <button className="w-2/4 border-4 bg-sky-500 m" onClick={renderGame}> START GAME </button>
+      {/* <button className="w-2/4 border-4 bg-sky-500 m" onClick={renderGame}> START GAME </button> */
+      <button className="btn-primary" onClick={renderGame}> START GAME </button>}
         {isClicked ? <Word arr = {data}/> : '' }
     </div>
   )
@@ -183,11 +218,12 @@ function Word({arr}) {
       onChange = {e => setNameInputValue(e.target.value) } 
       />
    
-      <button onClick={() => {
+      <button className="btn-primary" onClick={() => {
             check() }}> check </button>
       <div>
         {!isVisible ? " " : answer ? < CorrectAnswer /> : <IncorrectAnswer answer={answerValue} />}
-        {isVisible ? <button className="w-2/4 border-4 bg-sky-500 m" onClick={() => {
+        {isVisible ? <button  className="btn-primary"
+                              onClick={() => {
                                 setIndex(Math.floor(Math.random() * (data.length) ))
                                 setIsVisible(false) 
                                 setNameInputValue("")
