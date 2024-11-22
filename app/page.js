@@ -12,16 +12,16 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center bg-gradient-to-br from-[#fdf4ec] to-[#ffc592] text-[#140800] font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
-      <div className="w-11/12 flex gap-2 justify-between mb-2">
-        <button className="btn-primary" 
+      <div className="w-11/12 flex justify-between mb-2 bg-[#2a9d8f] h-10">
+        <button className="border-r-2 w-1/3 border-[#264653] hover:bg-[#33C1B1] hover:font-bold"
               onClick={() => {
                setPageNum(0)
                }} > My cards </button>
-        <button className="btn-primary" 
+        <button className="border-r-2 w-1/3 border-[#264653] hover:bg-[#33C1B1] hover:font-bold"
               onClick={() => {
                setPageNum(2)
                }} > Add a card </button>
-        <button className="btn-primary" 
+        <button className="w-1/3 hover:bg-[#33C1B1] hover:font-bold" 
               onClick={() => { setPageNum(1)
                }} > Play a game </button>
       </div>      
@@ -32,35 +32,47 @@ export default function Home() {
   )
 }
 
-// function PlayGame() {
-  // const [isClicked, setIsClicked] = useState(false)
-  // function renderInstructions() {
-  //   setIsClicked(true)
-  // }
 
-//   return (
-//     <div className="w-screen flex flex-col items-center">
-//       <button className="mt-8 p-2 border-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 mx-auto" 
-//               onClick={() => {
-//                renderInstructions()
-//                }} > Play a game </button>
-//       {isClicked ? <GameExplanation /> : ''}
-//     </div>
-//   )
-// }
+function DisplayCards() {
+  const [data, setData] = useState([])
 
-// function AddCards() {
-// const [isClicked, setIsClicked] = useState(false)
-//   return (
-//     <div className="w-screen flex flex-col items-center">
-//       <button className="mt-8 p-2 border-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 mx-auto" 
-//               onClick={() => {
-//                setIsClicked(true)
-//                }} > Add a card </button>
-//       {isClicked ? <Card /> : ""}
-//     </div>
-//   )
-// }
+  const fetchData = async () => {
+ 
+    try {
+      const result = await select()
+      setData(result)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, []) 
+ 
+   return (
+    <div className="flex flex-col items-center">
+      {data && data.length > 0 ? (
+        data.map((item) => {
+         return (
+            <div className="grid grid-rows-2 grid-cols-2 rounded-md bg-[#efd595] border mt-5 border-[#264653] w-11/12 p-3 " key={item.id} id={item.id}>
+                <p className='font-bold'> {item.name} </p>
+                <p className="grid-rows-subgrid row-start-3"> {item.definition} </p>
+                <button className="grid-cols-subgrid col-end-4" onClick = {(e) => {
+                  removeItems(e.target.parentElement.id ) 
+                  fetchData()}
+                  }>  ❌ </button> 
+            </div>
+          )
+        })
+      ) : (
+        <p> Loading .... </p>
+        )
+      }
+    </div>
+  )
+}
+
 
 function AddCard() {
   const [wordInputValue, setWordInputValue] = useState("")
@@ -98,47 +110,6 @@ function AddCard() {
       </div>
   )
 }
-function DisplayCards() {
-  const [data, setData] = useState([])
-
-  const fetchData = async () => {
- 
-    try {
-      const result = await select()
-      setData(result)
-    } catch (error) {
-      console.error("Error fetching data:", error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, []) 
- 
-   return (
-    <div className="flex flex-col items-center">
-      {data && data.length > 0 ? (
-        data.map((item) => {
-         return (
-            <div className="grid grid-rows-2 grid-cols-2 rounded-md bg-[#efd595] border mt-5 border-[#264653] w-11/12 p-3 " key={item.id} id={item.id}>
-                <p> {item.name} </p>
-                <p className="grid-rows-subgrid row-start-3"> {item.definition} </p>
-                <button className="grid-cols-subgrid col-end-4" onClick = {(e) => {
-                  removeItems(e.target.parentElement.id ) 
-                  fetchData()}
-                  }>  ❌ </button> 
-            </div>
-          )
-        })
-      ) : (
-        <p> Loading .... </p>
-        )
-      }
-    </div>
-  )
-}
-
-
 
 
 function GameExplanation() {
@@ -200,8 +171,8 @@ function Word({arr}) {
       }
        setData(result()   )
     } else {
-        setAnswer(false)
-      } 
+      setAnswer(false)
+    } 
   }
  
   return (
@@ -234,6 +205,7 @@ function Word({arr}) {
     </div>
   )
 }
+
 
 function CorrectAnswer() {
   return (
