@@ -51,7 +51,8 @@ function DisplayCards() {
   }, []) 
  
    return (
-    <div className="flex flex-col items-center">
+    // <div className="flex flex-col items-center md:grid md:grid-cols-2 md:grid-flow-col">
+    <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 grid-flow-row ">
       {data && data.length > 0 ? (
         data.map((item) => {
          return (
