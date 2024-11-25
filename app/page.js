@@ -140,14 +140,14 @@ function GameExplanation() {
 
   return (
     <div>
-    {isVisible ? (
-      <div className="m-2"> 
-        <p> You will get a definition, type the word </p>
-        <p> To start your game, click START GAME button </p>
-      <button className="btn-primary mb-4" onClick={renderGame}> START GAME </button> 
-      </div>) : null }
-    {isClicked ? <Word arr = {data}/>  : null }
-  </div>
+      {isVisible ? (
+        <div className="m-2"> 
+          <p className="mt-2"> You will get a definition, type the word </p>
+          <p className="mb-2"> To start your game, click START GAME button </p>
+          <button className="btn-primary mb-4" onClick={renderGame}> START GAME </button> 
+        </div>) : null }
+      {isClicked ? <Word arr = {data}/>  : null }
+    </div>
   )
 }
 
@@ -192,28 +192,24 @@ function Word({arr}) {
     <div>
       {data.length == 0 ?  (
         <div> Well done! Game is finished </div>
-      )  : index == data.length ? "Choosing ..." : (
-      <>
-        {/* {console.log(data[index].definition) } */}
-        {/* {console.log(`index: ${index}`) }
-        { console.log(`data length ${data.length}`) } */}
+        )  : index == data.length ? "Choosing ..." : (
+          <>
           <div> {data[index].definition} </div>
-      <input
-      type="text"
-      className="border-2 border-black w-11/12 rounded mb-2" 
-      placeholder="type the word"
-      value = {nameInputValue}
-      onChange = {e => setNameInputValue(e.target.value) } 
-      />
-      <button className="btn-primary mb-4" onClick={() => {
-             check()
-           
-            }}> Check </button>
-      <div>
-        {!isVisible ? " " : answer ? < CorrectAnswer /> : <IncorrectAnswer answer={answerValue} />}
-      </div> 
-      </>
-    )}
+          <input
+            type="text"
+            className="border-2 border-black w-11/12 rounded mb-2" 
+            placeholder="type the word"
+            value = {nameInputValue}
+            onChange = {e => setNameInputValue(e.target.value) } 
+          />
+          <button className="btn-primary mb-4" 
+            onClick={() => {check()}}> Check 
+          </button>
+          <div>
+            {!isVisible ? " " : answer ? < CorrectAnswer /> : <IncorrectAnswer answer={answerValue} />}
+          </div> 
+          </>
+        )}
     </div>
   )
 }
