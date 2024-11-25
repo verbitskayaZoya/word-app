@@ -27,7 +27,7 @@ export default function Home() {
       </div>      
       {pageNum === 0 ? <DisplayCards /> : ''}
       {pageNum === 1 ? <GameExplanation /> : ''}
-      {pageNum === 2 ? <AddCard /> : ""}
+      {pageNum === 2 ? <AddCard /> : ''}
     </div>
   )
 }
@@ -55,10 +55,11 @@ function DisplayCards() {
       {data && data.length > 0 ? (
         data.map((item) => {
          return (
-            <div className="grid grid-rows-2 grid-cols-2 rounded-md bg-[#efd595] border mt-5 border-[#264653] w-11/12 p-3 " key={item.id} id={item.id}>
+            <div className="grid grid-rows-2 grid-cols-2 rounded-md 
+              bg-[#efd595] border border-[#264653] mt-5 w-11/12 min-h-24 p-2 opacity-90" key={item.id} id={item.id}>
                 <p className='font-bold'> {item.name} </p>
-                <p className="grid-rows-subgrid row-start-3"> {item.definition} </p>
-                <button className="grid-cols-subgrid col-end-4" onClick = {(e) => {
+                <p className="grid grid-rows-subgrid row-start-2 col-span-2"> {item.definition} </p>
+                <button className="grid grid-cols-subgrid col-start-3" onClick = {(e) => {
                   removeItems(e.target.parentElement.id ) 
                   fetchData()}
                   }>  ❌ </button> 
