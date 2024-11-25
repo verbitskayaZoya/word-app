@@ -115,11 +115,13 @@ function AddCard() {
 function GameExplanation() {
   const [data, setData] = useState([])
   const [isClicked, setIsClicked] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
  
 
   function renderGame() {
     if(data.length > 0) {
       setIsClicked(true)
+      setIsVisible(false)
     }
   }
   const fetchData = async () => {
@@ -138,14 +140,14 @@ function GameExplanation() {
 
   return (
     <div>
-      <div> 
+    {isVisible ? (
+      <div className="m-2"> 
         <p> You will get a definition, type the word </p>
         <p> To start your game, click START GAME button </p>
-      </div>
-      {/* <button className="w-2/4 border-4 bg-sky-500 m" onClick={renderGame}> START GAME </button> */
-      <button className="btn-primary" onClick={renderGame}> START GAME </button>}
-        {isClicked ? <Word arr = {data}/> : '' }
-    </div>
+      <button className="btn-primary mb-4" onClick={renderGame}> START GAME </button> 
+      </div>) : null }
+    {isClicked ? <Word arr = {data}/>  : null }
+  </div>
   )
 }
 
@@ -157,11 +159,20 @@ function Word({arr}) {
   const [isVisible, setIsVisible] = useState(false)
   const [data, setData] = useState(arr)
   const [answerValue, setAnswerValue] = useState('')
+  
 
+
+  useEffect(() => {
+      if (data.length > 0) {
+        // console.log(`data.length from the effect ${data.length}`)
+        setIndex(Math.floor(Math.random() * data.length));
+      }
+  }, [data]) // Run this effect when isVisible or data changes
 
   function check() {  
     setIsVisible(true)
-   setAnswerValue(data[index].name)
+    setNameInputValue("")
+    setAnswerValue(data[index].name)
     if(data[index].name === nameInputValue.toLowerCase()) {
       setAnswer(true)
       const result = () => {
@@ -170,35 +181,36 @@ function Word({arr}) {
        })
       }
        setData(result()   )
+      //  setIndex(Math.floor(Math.random() * data.length))
     } else {
       setAnswer(false)
     } 
+ 
   }
  
   return (
     <div>
       {data.length == 0 ?  (
         <div> Well done! Game is finished </div>
-      )  : (
+      )  : index == data.length ? "Choosing ..." : (
       <>
-      <div>  { nameInputValue == "" ? data[index].definition : null } </div>
+        {/* {console.log(data[index].definition) } */}
+        {/* {console.log(`index: ${index}`) }
+        { console.log(`data length ${data.length}`) } */}
+          <div> {data[index].definition} </div>
       <input
       type="text"
+      className="border-2 border-black w-11/12 rounded mb-2" 
       placeholder="type the word"
       value = {nameInputValue}
       onChange = {e => setNameInputValue(e.target.value) } 
       />
-   
-      <button className="btn-primary" onClick={() => {
-            check() }}> check </button>
+      <button className="btn-primary mb-4" onClick={() => {
+             check()
+           
+            }}> Check </button>
       <div>
         {!isVisible ? " " : answer ? < CorrectAnswer /> : <IncorrectAnswer answer={answerValue} />}
-        {isVisible ? <button  className="btn-primary"
-                              onClick={() => {
-                                setIndex(Math.floor(Math.random() * (data.length) ))
-                                setIsVisible(false) 
-                                setNameInputValue("")
-        }}> Next </button> : " "}
       </div> 
       </>
     )}
