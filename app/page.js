@@ -1,6 +1,6 @@
 
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { create, select, removeItems } from '/app/actions'
 // import { Suspense } from 'react'
 import { v4 as uuidv4 } from 'uuid';
@@ -152,64 +152,113 @@ function GameExplanation() {
 }
 
 function Word({arr}) {
-
- const  [index, setIndex] = useState(0)
+  const  [index, setIndex] = useState(0)
   const [nameInputValue, setNameInputValue] = useState("")
-  const [answer, setAnswer] = useState()
-  const [isVisible, setIsVisible] = useState(false)
+  const [answer, setAnswer] = useState(0)
   const [data, setData] = useState(arr)
-  const [answerValue, setAnswerValue] = useState('')
+  const [answerValue, setAnswerValue] = useState("")
+  // const [showMessage, setShowMessage] = useState(true)
   
-
-
   useEffect(() => {
       if (data.length > 0) {
-        // console.log(`data.length from the effect ${data.length}`)
-        setIndex(Math.floor(Math.random() * data.length));
+        setIndex(Math.floor(Math.random() * data.length))
       }
-  }, [data]) // Run this effect when isVisible or data changes
+  }, [data]) 
 
   function check() {  
-    setIsVisible(true)
+   
     setNameInputValue("")
     setAnswerValue(data[index].name)
+
     if(data[index].name === nameInputValue.toLowerCase()) {
-      setAnswer(true)
+      setAnswer(prevState => {
+        if(prevState !== 2)  {
+          // setShowMessage(true)
+          return 1
+        } 
+      } )
       const result = () => {
-       return data.filter((item) => {
-        return item.name !== data[index].name
-       })
+        return data.filter((item) => {
+          return item.name !== data[index].name
+        })
       }
-       setData(result()   )
-      //  setIndex(Math.floor(Math.random() * data.length))
+      setData(result()   )
     } else {
-      setAnswer(false)
-    } 
- 
+      setAnswer(2)
   }
+}
  
+ 
+//   useEffect(() => {
+//     if(showMessage) {
+//       const timer = setTimeout(() => {
+//         setShowMessage(false); // Hide the message after 3 seconds
+//     }, 4000);
+//     return () => {
+//       clearTimeout(timer); // Cleanup the timer on unmount
+//     }
+//     }
+// }, [showMessage]);
+
+const [content, setContent] = useState('')
+
+const gameDisplay = useMemo(() => (
+                    <>
+                      {data[index] ? <p className="m-4"> {data[index].definition} </p> : null }
+                      <input
+                        type="text"
+                        className="border-2 border-black w-11/12 rounded mb-4" 
+                        placeholder="type the word"
+                        value = {nameInputValue}
+                        onChange = {e => setNameInputValue(e.target.value) } 
+                      />
+                      <button className="btn-primary mb-4" 
+                        onClick={() => {check()}}> Check 
+                      </button> 
+                    </>
+                      ), [data, index, nameInputValue])
+
+useEffect(() => {
+  if(index === data.length) {
+    setContent( <div> Well done! Game is finished!  </div> )
+  } else if(answer === 1 ) {
+   setContent( <p> great job! </p> )
+   const timer = setTimeout(() => {
+    setContent ( gameDisplay )
+    setAnswer(0)
+  }, 2000)
+    return () => clearTimeout(timer)
+} else if(data.length === 0) {
+  setContent( <p> Well done! Game is finished </p> )
+} else {
+  setContent( gameDisplay )
+}
+}, [answer, data, index, gameDisplay] )
+
+
   return (
     <div>
-      {data.length == 0 ?  (
-        <div> Well done! Game is finished </div>
-        )  : index == data.length ? "Choosing ..." : (
-          <>
-          <div> {data[index].definition} </div>
-          <input
-            type="text"
-            className="border-2 border-black w-11/12 rounded mb-2" 
-            placeholder="type the word"
-            value = {nameInputValue}
-            onChange = {e => setNameInputValue(e.target.value) } 
-          />
-          <button className="btn-primary mb-4" 
-            onClick={() => {check()}}> Check 
-          </button>
+      {content}
+      {/* {data.length == 0 ?  (
+        <p> Well done! Game is finished </p> */}
+        {/* // ) : answer === 1 && showMessage ? (<p> great job! </p> */}
+          {/* )  : index === data.length ? (<div> Choosing </div> ) */}
+                {/* : (<div>  
+                <p className="m-4"> {data[index].definition} </p>
+              <input
+                type="text"
+                className="border-2 border-black w-11/12 rounded mb-4" 
+                placeholder="type the word"
+                value = {nameInputValue}
+                onChange = {e => setNameInputValue(e.target.value) } 
+              />
+              <button className="btn-primary mb-4" 
+                onClick={() => {check()}}> Check 
+              </button> 
+              </div> ) } */}
           <div>
-            {!isVisible ? " " : answer ? < CorrectAnswer /> : <IncorrectAnswer answer={answerValue} />}
+            {answer === 2 ?  <IncorrectAnswer answer={answerValue} /> : null}
           </div> 
-          </>
-        )}
     </div>
   )
 }
@@ -226,7 +275,7 @@ function CorrectAnswer() {
 function IncorrectAnswer({answer}) {
   return (
     <div>
-      Not quite right. The answer is {answer.toUpperCase()}. 
+      Not quite right. The answer is {answer.toUpperCase() }. 
     </div>
   )
 }
