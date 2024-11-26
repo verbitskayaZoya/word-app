@@ -51,13 +51,12 @@ function DisplayCards() {
   }, []) 
  
    return (
-    // <div className="flex flex-col items-center md:grid md:grid-cols-2 md:grid-flow-col">
     <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 grid-flow-row ">
       {data && data.length > 0 ? (
         data.map((item) => {
          return (
             <div className="grid grid-rows-2 grid-cols-2 rounded-md 
-              bg-[#efd595] border border-[#264653] mt-5 w-11/12 min-h-24 p-2 opacity-90" key={item.id} id={item.id}>
+              bg-[#efd595] border border-[#264653] mt-5 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
                 <p className='font-bold'> {item.name} </p>
                 <p className="grid grid-rows-subgrid row-start-2 col-span-2"> {item.definition} </p>
                 <button className="grid grid-cols-subgrid col-start-3" onClick = {(e) => {
