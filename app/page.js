@@ -4,8 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { create, select, removeItems } from '/app/actions'
 // import { Suspense } from 'react'
 import { v4 as uuidv4 } from 'uuid';
-
-
+import Image from 'next/image';
 
 export default function Home() {
   const [pageNum, setPageNum] = useState(0)
@@ -144,7 +143,7 @@ function GameExplanation() {
         <div className="m-2"> 
           <p className="mt-2"> You will get a definition, type the word </p>
           <p className="mb-2"> To start your game, click START GAME button </p>
-          <button className="btn-primary mb-4" onClick={renderGame}> START GAME </button> 
+          <button className="btn-primary mb-4 animate-bounce" onClick={renderGame}> START GAME </button> 
         </div>) : null }
       {isClicked ? <Word arr = {data}/>  : null }
     </div>
@@ -201,12 +200,21 @@ const gameDisplay = useMemo(() => (
                           setIndex(Math.floor(Math.random() * data.length))
                         }
                     }, [data]) 
+                    
 
 useEffect(() => {
   if(index === data.length) {
     setContent( <div> Well done! Game is finished!  </div> )
   } else if(answer === 1 ) {
-   setContent( <p> great job! </p> )
+   setContent( <>
+              <Image 
+                src="/images/minions.webp" 
+                alt="chick"
+                width={360}
+                height={360}
+              />
+    <p className="text-5xl text-center font-bold mt-4 "> +1 </p> 
+    </>)
    const timer = setTimeout(() => {
       setContent ( gameDisplay )
       setAnswer(0)
@@ -229,14 +237,6 @@ useEffect(() => {
   )
 }
 
-
-function CorrectAnswer() {
-  return (
-    <div>
-      Correct, great job!
-    </div>
-  )
-}
 
 function IncorrectAnswer({answer}) {
   return (
