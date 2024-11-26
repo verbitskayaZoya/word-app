@@ -157,51 +157,29 @@ function Word({arr}) {
   const [answer, setAnswer] = useState(0)
   const [data, setData] = useState(arr)
   const [answerValue, setAnswerValue] = useState("")
-  // const [showMessage, setShowMessage] = useState(true)
-  
-  useEffect(() => {
-      if (data.length > 0) {
-        setIndex(Math.floor(Math.random() * data.length))
-      }
-  }, [data]) 
+  const [content, setContent] = useState('')
 
   function check() {  
-   
     setNameInputValue("")
     setAnswerValue(data[index].name)
 
     if(data[index].name === nameInputValue.toLowerCase()) {
       setAnswer(prevState => {
         if(prevState !== 2)  {
-          // setShowMessage(true)
           return 1
         } 
-      } )
+      })
       const result = () => {
         return data.filter((item) => {
           return item.name !== data[index].name
         })
       }
-      setData(result()   )
+      setData(result())
     } else {
       setAnswer(2)
-  }
+    }
 }
  
- 
-//   useEffect(() => {
-//     if(showMessage) {
-//       const timer = setTimeout(() => {
-//         setShowMessage(false); // Hide the message after 3 seconds
-//     }, 4000);
-//     return () => {
-//       clearTimeout(timer); // Cleanup the timer on unmount
-//     }
-//     }
-// }, [showMessage]);
-
-const [content, setContent] = useState('')
-
 const gameDisplay = useMemo(() => (
                     <>
                       {data[index] ? <p className="m-4"> {data[index].definition} </p> : null }
@@ -218,47 +196,35 @@ const gameDisplay = useMemo(() => (
                     </>
                       ), [data, index, nameInputValue])
 
+                      useEffect(() => {
+                        if (data.length > 0) {
+                          setIndex(Math.floor(Math.random() * data.length))
+                        }
+                    }, [data]) 
+
 useEffect(() => {
   if(index === data.length) {
     setContent( <div> Well done! Game is finished!  </div> )
   } else if(answer === 1 ) {
    setContent( <p> great job! </p> )
    const timer = setTimeout(() => {
-    setContent ( gameDisplay )
-    setAnswer(0)
-  }, 2000)
+      setContent ( gameDisplay )
+      setAnswer(0)
+    }, 2000)
     return () => clearTimeout(timer)
-} else if(data.length === 0) {
-  setContent( <p> Well done! Game is finished </p> )
-} else {
-  setContent( gameDisplay )
-}
-}, [answer, data, index, gameDisplay] )
-
+  } else if(data.length === 0) {
+    setContent( <p> Well done! Game is finished </p> )
+  } else {
+    setContent( gameDisplay )
+  }
+}, [answer, data, index, gameDisplay])
 
   return (
     <div>
       {content}
-      {/* {data.length == 0 ?  (
-        <p> Well done! Game is finished </p> */}
-        {/* // ) : answer === 1 && showMessage ? (<p> great job! </p> */}
-          {/* )  : index === data.length ? (<div> Choosing </div> ) */}
-                {/* : (<div>  
-                <p className="m-4"> {data[index].definition} </p>
-              <input
-                type="text"
-                className="border-2 border-black w-11/12 rounded mb-4" 
-                placeholder="type the word"
-                value = {nameInputValue}
-                onChange = {e => setNameInputValue(e.target.value) } 
-              />
-              <button className="btn-primary mb-4" 
-                onClick={() => {check()}}> Check 
-              </button> 
-              </div> ) } */}
-          <div>
-            {answer === 2 ?  <IncorrectAnswer answer={answerValue} /> : null}
-          </div> 
+      <div>
+        {answer === 2 ?  <IncorrectAnswer answer={answerValue} /> : null}
+      </div> 
     </div>
   )
 }
