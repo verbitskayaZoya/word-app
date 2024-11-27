@@ -210,8 +210,8 @@ useEffect(() => {
               <Image 
                 src="/images/minions.webp" 
                 alt="chick"
-                width={360}
-                height={360}
+                width={500}
+                height={226}
               />
     <p className="text-5xl text-center font-bold mt-4 "> +1 </p> 
     </>)
