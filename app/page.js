@@ -9,18 +9,18 @@ import Image from 'next/image';
 export default function Home() {
   const [pageNum, setPageNum] = useState(0)
   return (
-    <div className= "flex flex-col items-center bg-gradient-to-br from-[#fdf4ec] to-[#ffc592] text-[#140800] font-mono h-screen">
+    <div className= "flex flex-col items-center bg-gradient-to-br from-wa-bg-from to-wa-bg-to text-wa-text font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
-      <div className="w-11/12 flex justify-between mb-2 bg-[#2a9d8f] h-10">
-        <button className="border-r-2 w-1/3 border-[#264653] hover:bg-[#33C1B1] hover:font-bold"
+      <div className="w-11/12 flex justify-between mb-2 bg-wa-button-bg h-10">
+        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-button-bg-hover hover:font-bold"
               onClick={() => {
                setPageNum(0)
                }} > My cards </button>
-        <button className="border-r-2 w-1/3 border-[#264653] hover:bg-[#33C1B1] hover:font-bold"
+        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-button-bg-hover hover:font-bold"
               onClick={() => {
                setPageNum(2)
                }} > Add a card </button>
-        <button className="w-1/3 hover:bg-[#33C1B1] hover:font-bold" 
+        <button className="w-1/3 hover:bg-wa-button-bg-hover hover:font-bold" 
               onClick={() => { setPageNum(1)
                }} > Play a game </button>
       </div>      
@@ -55,7 +55,7 @@ function DisplayCards() {
         data.map((item) => {
          return (
             <div className="grid grid-rows-2 grid-cols-2 rounded-md 
-              bg-[#efd595] border border-[#264653] mt-5 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
+              bg-wa-secondary-bg border border-wa-border mt-5 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
                 <p className='font-bold'> {item.name} </p>
                 <p className="grid grid-rows-subgrid row-start-2 col-span-2"> {item.definition} </p>
                 <button className="grid grid-cols-subgrid col-start-3" onClick = {(e) => {
@@ -85,13 +85,13 @@ function AddCard() {
           id="input-word" 
           type="text" 
           placeholder="Type your word here" 
-          className="border-2 border-black w-11/12 rounded" 
+          className="border-2 border-wa-border w-11/12 rounded" 
           value = { wordInputValue }
           onChange = {e => setWordInputValue(e.target.value) } 
         />
         <textarea id="input-definition"
           placeholder="Type your example here" 
-          className="border-2 border-black w-11/12 h-20 rounded" 
+          className="border-2 border-wa-border w-11/12 h-20 rounded" 
           value = {definitionInputValue}
           onChange = {e => setDefinitionInputValue(e.target.value) } 
         /> 
@@ -185,7 +185,7 @@ const gameDisplay = useMemo(() => (
                       {data[index] ? <p className="m-4"> {data[index].definition} </p> : null }
                       <input
                         type="text"
-                        className="border-2 border-black w-11/12 rounded mb-4" 
+                        className="border-2 border-wa-border w-11/12 rounded mb-4" 
                         placeholder="type the word"
                         value = {nameInputValue}
                         onChange = {e => setNameInputValue(e.target.value) } 

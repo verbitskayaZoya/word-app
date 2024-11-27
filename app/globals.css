@@ -28,6 +28,6 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply border-2 p-2 rounded bg-[#2a9d8f] border-[#264653] w-11/12 hover:bg-[#33C1B1] hover:font-bold;
+    @apply border-2 p-2 rounded bg-wa-button-bg border-wa-border w-11/12 hover:bg-wa-button-bg-hover hover:font-bold;
   }
 }
