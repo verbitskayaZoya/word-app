@@ -151,12 +151,13 @@ function GameExplanation() {
 }
 
 function Word({arr}) {
-  const  [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(0)
   const [nameInputValue, setNameInputValue] = useState("")
   const [answer, setAnswer] = useState(0)
   const [data, setData] = useState(arr)
   const [answerValue, setAnswerValue] = useState("")
   const [content, setContent] = useState('')
+  const [score, setScore] = useState(0)
 
   function check() {  
     setNameInputValue("")
@@ -165,6 +166,7 @@ function Word({arr}) {
     if(data[index].name === nameInputValue.toLowerCase()) {
       setAnswer(prevState => {
         if(prevState !== 2)  {
+          setScore(score + 1)
           return 1
         } 
       })
@@ -204,7 +206,7 @@ const gameDisplay = useMemo(() => (
 
 useEffect(() => {
   if(index === data.length) {
-    setContent( <div> Well done! Game is finished!  </div> )
+    setContent( <div> Well done! Game is finished! Your score is {score} out of {arr.length}. </div> )
   } else if(answer === 1 ) {
    setContent( <>
               <Image 
