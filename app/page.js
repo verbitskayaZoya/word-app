@@ -11,16 +11,16 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center bg-gradient-to-br from-wa-bg-from to-wa-bg-to text-wa-text font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
-      <div className="w-11/12 flex justify-between mb-2 bg-wa-button-bg h-10">
-        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-button-bg-hover hover:font-bold"
+      <div className="w-11/12 flex justify-between mb-2 bg-wa-btn-bg h-10">
+        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text"
               onClick={() => {
                setPageNum(0)
                }} > My cards </button>
-        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-button-bg-hover hover:font-bold"
+        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text"
               onClick={() => {
                setPageNum(2)
                }} > Add a card </button>
-        <button className="w-1/3 hover:bg-wa-button-bg-hover hover:font-bold" 
+        <button className="w-1/3 hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text" 
               onClick={() => { setPageNum(1)
                }} > Play a game </button>
       </div>      
@@ -248,7 +248,7 @@ useEffect(() => {
             </>
      )
   } else if(answer === 1 ) {
-   setContent( <p className="text-5xl text-center font-bold mt-8 text-[#F8D112] animate-bounce"> +1 </p> )
+   setContent( <p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce"> +1 </p> )
    const timer = setTimeout(() => {
       setContent ( gameDisplay )
       setAnswer(0)
