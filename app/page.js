@@ -144,7 +144,7 @@ function GameExplanation() {
         <div className="m-2"> 
           <p className="mt-2"> You will get a definition, type the word </p>
           <p className="mb-2"> To start your game, click START GAME button </p>
-          <button className="btn-primary mb-4 animate-bounce" onClick={renderGame}> START GAME </button> 
+          <button className="btn-primary mb-4  mt-4 animate-pulse" onClick={renderGame}> START GAME </button> 
         </div>) : null }
       {isClicked ? <Word arr = {data}/>  : null }
     </div>
@@ -152,12 +152,36 @@ function GameExplanation() {
 }
 
 function Word({arr}) {
-  const  [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(0)
   const [nameInputValue, setNameInputValue] = useState("")
   const [answer, setAnswer] = useState(0)
   const [data, setData] = useState(arr)
   const [answerValue, setAnswerValue] = useState("")
   const [content, setContent] = useState('')
+  const [score, setScore] = useState(0)
+
+const imagesNotGoodArr = [
+    {name: "can-do-it.webp", alt: ""},
+    {name: "just-do-it.webp", alt: ""},
+    {name: "not-give-up.webp", alt: "'"}, 
+  ]
+
+const imagesGoodArr = [
+  {name: "nice.webp", alt: ""},
+  {name: "thumb.webp", alt: ""},
+  {name: "viking-ok.webp", alt: "'"}, 
+]
+
+
+const imagesSuperArr  = [
+  {name: "amazing.webp", alt: ""},
+  {name: "fireworks.webp", alt: ""},
+  {name: "terrific.webp", alt: "'"}, 
+  {name: "vietnamese-wow.webp", alt: ""},
+  {name: "viking-perfect.webp", alt: ""},
+  {name: "wow.webp", alt: "'"}, 
+]
+
 
   function check() {  
     setNameInputValue("")
@@ -166,6 +190,7 @@ function Word({arr}) {
     if(data[index].name === nameInputValue.toLowerCase()) {
       setAnswer(prevState => {
         if(prevState !== 2)  {
+          setScore(score + 1)
           return 1
         } 
       })
@@ -196,30 +221,38 @@ const gameDisplay = useMemo(() => (
                     </>
                       ), [data, index, nameInputValue])
 
-                      useEffect(() => {
-                        if (data.length > 0) {
-                          setIndex(Math.floor(Math.random() * data.length))
-                        }
-                    }, [data]) 
+useEffect(() => {
+  if (data.length > 0) {
+    setIndex(Math.floor(Math.random() * data.length))
+   }
+}, [data]) 
                     
+const [image, setImage] = useState("")
 
 useEffect(() => {
   if(index === data.length) {
-    setContent( <div> Well done! Game is finished!  </div> )
+    setContent( <>
+    <div className="m-6 text-xl"> Well done! Game is finished! Your score is {score} out of {arr.length}. </div>
+       { score / arr.length > 0.95 ? setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
+          : score / arr.length >= 0.6 ? setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
+          : setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
+       }
+
+       <Image 
+                src={`/images/${image}`}
+                alt="good job"
+                width={160}
+                height={160}
+                className="md:w-auto md:h-auto m-auto"
+        />
+            </>
+     )
   } else if(answer === 1 ) {
-   setContent( <>
-              <Image 
-                src="/images/minions.webp" 
-                alt="chick"
-                width={500}
-                height={226}
-              />
-    <p className="text-5xl text-center font-bold mt-4 "> +1 </p> 
-    </>)
+   setContent( <p className="text-5xl text-center font-bold mt-8 text-[#F8D112] animate-bounce"> +1 </p> )
    const timer = setTimeout(() => {
       setContent ( gameDisplay )
       setAnswer(0)
-    }, 2000)
+    }, 1000)
     return () => clearTimeout(timer)
   } else if(data.length === 0) {
     setContent( <p> Well done! Game is finished </p> )
