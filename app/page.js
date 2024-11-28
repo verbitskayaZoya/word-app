@@ -99,11 +99,10 @@ function AddCard() {
                 if(wordInputValue === "" || definitionInputValue === "") {
                   alert("Make sure your word and example are entered")
                 } else {
-                  create(id, wordInputValue.toLowerCase(), definitionInputValue.toLowerCase()) 
+                  create(id, wordInputValue.toLowerCase(), definitionInputValue) 
                 }
                 setWordInputValue('')
                 setDefinitionInputValue('')
-                // fetchData()
                }} > 
         Save </button> 
       </div>
@@ -162,23 +161,23 @@ function Word({arr}) {
 const imagesNotGoodArr = [
     {name: "can-do-it.webp", alt: ""},
     {name: "just-do-it.webp", alt: ""},
-    {name: "not-give-up.webp", alt: "'"}, 
+    {name: "not-give-up.webp", alt: ""}, 
   ]
 
 const imagesGoodArr = [
   {name: "nice.webp", alt: ""},
   {name: "thumb.webp", alt: ""},
-  {name: "viking-ok.webp", alt: "'"}, 
+  {name: "viking-ok.webp", alt: ""}, 
 ]
 
 
 const imagesSuperArr  = [
   {name: "amazing.webp", alt: ""},
   {name: "fireworks.webp", alt: ""},
-  {name: "terrific.webp", alt: "'"}, 
+  {name: "terrific.webp", alt: ""}, 
   {name: "vietnamese-wow.webp", alt: ""},
   {name: "viking-perfect.webp", alt: ""},
-  {name: "wow.webp", alt: "'"}, 
+  {name: "wow.webp", alt: ""}, 
 ]
 
 
@@ -228,37 +227,52 @@ useEffect(() => {
                     
 const [image, setImage] = useState("")
 
-useEffect(() => {
-  if(index === data.length) {
-    setContent( <>
-    <div className="m-6 text-xl"> Well done! Game is finished! Your score is {score} out of {arr.length}. </div>
-       { score / arr.length > 0.95 ? setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
-          : score / arr.length >= 0.6 ? setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
-          : setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
-       }
 
-       <Image 
-                src={`/images/${image}`}
-                alt="good job"
-                width={160}
-                height={160}
-                className="md:w-auto md:h-auto m-auto"
-              />
-            </>
-     )
-  } else if(answer === 1 ) {
-   setContent( <p className="text-5xl text-center font-bold mt-8 text-[#F8D112] animate-bounce"> +1 </p> )
-   const timer = setTimeout(() => {
+useEffect(() => {
+  if(data.length === 0) {
+    if(score/arr.length > 0.95) {
+      setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
+    } else if(score/arr.length >= 0.6) {
+      setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
+    } else {
+      setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
+    }
+  }
+}, [data])
+
+useEffect(() => {
+  setContent( <>
+    <div className="m-6 text-xl"> Well done! Game is finished! 
+      Your score is {score} out of {arr.length}. 
+    </div>
+    <Image 
+      src={`/images/${image}`}
+      alt="good job"
+      width={300}
+      height={300}
+      className="md:w-auto md:h-auto m-auto"
+      unoptimized
+    />
+</>
+)
+}, [image])
+
+
+
+useEffect(() => {
+   if(answer === 1 && data.length !== 0) {
+    setContent( <p className="text-5xl text-center font-bold mt-8 text-[#F8D112] animate-bounce"> +1 
+                </p> 
+              )
+    const timer = setTimeout(() => {
       setContent ( gameDisplay )
       setAnswer(0)
     }, 1000)
     return () => clearTimeout(timer)
-  } else if(data.length === 0) {
-    setContent( <p> Well done! Game is finished </p> )
   } else {
     setContent( gameDisplay )
   }
-}, [answer, data, index, gameDisplay])
+}, [answer, gameDisplay])
 
   return (
     <div>
