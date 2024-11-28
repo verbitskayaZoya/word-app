@@ -100,11 +100,10 @@ function AddCard() {
                 if(wordInputValue === "" || definitionInputValue === "") {
                   alert("Make sure your word and example are entered")
                 } else {
-                  create(id, wordInputValue.toLowerCase(), definitionInputValue.toLowerCase()) 
+                  create(id, wordInputValue.toLowerCase(), definitionInputValue) 
                 }
                 setWordInputValue('')
                 setDefinitionInputValue('')
-                // fetchData()
                }} > 
         Save </button> 
       </div>
@@ -139,7 +138,7 @@ function GameExplanation() {
   }, []) 
 
   return (
-    <div>
+    <div className="w-11/12">
       {isVisible ? (
         <div className="m-4"> 
           <p className="mt-2 mx-2"> You will get a definition, type the word. </p>
@@ -163,23 +162,23 @@ function Word({arr}) {
 const imagesNotGoodArr = [
     {name: "can-do-it.webp", alt: ""},
     {name: "just-do-it.webp", alt: ""},
-    {name: "not-give-up.webp", alt: "'"}, 
+    {name: "not-give-up.webp", alt: ""}, 
   ]
 
 const imagesGoodArr = [
   {name: "nice.webp", alt: ""},
   {name: "thumb.webp", alt: ""},
-  {name: "viking-ok.webp", alt: "'"}, 
+  {name: "viking-ok.webp", alt: ""}, 
 ]
 
 
 const imagesSuperArr  = [
   {name: "amazing.webp", alt: ""},
   {name: "fireworks.webp", alt: ""},
-  {name: "terrific.webp", alt: "'"}, 
+  {name: "terrific.webp", alt: ""}, 
   {name: "vietnamese-wow.webp", alt: ""},
   {name: "viking-perfect.webp", alt: ""},
-  {name: "wow.webp", alt: "'"}, 
+  {name: "wow.webp", alt: ""}, 
 ]
 
 
@@ -206,19 +205,19 @@ const imagesSuperArr  = [
 }
  
 const gameDisplay = useMemo(() => (
-                    <>
-                      {data[index] ? <p className="m-4"> {data[index].definition} </p> : null }
+                    <div className="w-full text-center">
+                      {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null }
                       <input
                         type="text"
-                        className="border-2 border-wa-border w-11/12 rounded mb-4" 
+                        className="border-2 border-wa-border rounded mb-4 w-full text-center" 
                         placeholder="type the word"
                         value = {nameInputValue}
                         onChange = {e => setNameInputValue(e.target.value) } 
                       />
-                      <button className="btn-primary mb-4" 
+                      <button className="btn-primary mb-4 w-full" 
                         onClick={() => {check()}}> Check 
                       </button> 
-                    </>
+                    </div>
                       ), [data, index, nameInputValue])
 
 useEffect(() => {
@@ -230,39 +229,53 @@ useEffect(() => {
 const [image, setImage] = useState("")
 
 useEffect(() => {
-  if(index === data.length) {
-    setContent( <>
-    <div className="m-6 text-xl"> Well done! Game is finished! Your score is {score} out of {arr.length}. </div>
-       { score / arr.length > 0.95 ? setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
-          : score / arr.length >= 0.6 ? setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
-          : setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
-       }
+  if(data.length === 0) {
+    if(score/arr.length > 0.95) {
+      setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
+    } else if(score/arr.length >= 0.6) {
+      setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
+    } else {
+      setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
+    }
+  }
+}, [data])
 
-       <Image 
-                src={`/images/${image}`}
-                alt="good job"
-                width={160}
-                height={160}
-                className="md:w-auto md:h-auto m-auto"
-        />
-            </>
-     )
-  } else if(answer === 1 ) {
-   setContent( <p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce"> +1 </p> )
-   const timer = setTimeout(() => {
+useEffect(() => {
+  setContent( <>
+    <div className="m-6 text-xl text-center font-bold"> Game is finished! 
+      Your score is {score} out of {arr.length}. 
+    </div>
+    <Image 
+      src={`/images/${image}`}
+      alt="good job"
+      width={300}
+      height={300}
+      className="md:w-auto md:h-auto m-auto"
+      unoptimized
+    />
+</>
+)
+}, [image])
+
+
+
+useEffect(() => {
+   if(answer === 1 && data.length !== 0) {
+    setContent( <p className="text-5xl text-center font-bold mt-8 text-[#F8D112] animate-bounce"> +1 
+                </p> 
+              )
+    const timer = setTimeout(() => {
       setContent ( gameDisplay )
       setAnswer(0)
     }, 1000)
     return () => clearTimeout(timer)
-  } else if(data.length === 0) {
-    setContent( <p> Well done! Game is finished </p> )
   } else {
     setContent( gameDisplay )
   }
-}, [answer, data, index, gameDisplay])
+}, [answer, gameDisplay])
 
   return (
-    <div>
+    <div className="w-full">
       {content}
       <div>
         {answer === 2 ?  <IncorrectAnswer answer={answerValue} /> : null}
@@ -274,8 +287,8 @@ useEffect(() => {
 
 function IncorrectAnswer({answer}) {
   return (
-    <div>
-      Not quite right. The answer is {answer.toUpperCase() }. 
+    <div className="text-center m-2">
+      Not quite right! The answer is <span className="font-bold text-xl bg-wa-gold rounded-md py-1 px-2"> {answer}</span>
     </div>
   )
 }
