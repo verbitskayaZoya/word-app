@@ -28,6 +28,10 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply border-2 p-2 rounded bg-wa-btn-bg border-wa-border w-11/12 hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text;
+    @apply p-2 rounded bg-wa-btn-bg border-wa-border w-11/12 h-10 hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text;
+  }
+
+  .btn-nav {
+    @apply bg-wa-btn-bg hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text h-10 w-1/3;
   }
 }

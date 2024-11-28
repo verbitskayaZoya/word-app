@@ -11,16 +11,16 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center bg-gradient-to-br from-wa-bg-from to-wa-bg-to text-wa-text font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
-      <div className="w-11/12 flex justify-between mb-2 bg-wa-btn-bg h-10">
-        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text"
+      <div className="w-11/12 flex justify-between mb-2 h-10">
+        <button className="btn-nav border-r-2 border-wa-border"
               onClick={() => {
                setPageNum(0)
                }} > My cards </button>
-        <button className="border-r-2 w-1/3 border-wa-border hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text"
+        <button className="btn-nav border-r-2 border-wa-border"
               onClick={() => {
                setPageNum(2)
                }} > Add a card </button>
-        <button className="w-1/3 hover:bg-wa-btn-bg-hover hover:font-bold text-wa-button-text" 
+        <button className="btn-nav" 
               onClick={() => { setPageNum(1)
                }} > Play a game </button>
       </div>      
@@ -50,14 +50,14 @@ function DisplayCards() {
   }, []) 
  
    return (
-    <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 grid-flow-row ">
+    <div className="grid grid-cols-1 md:grid-cols-2 grid-flow-row justify-items-center">
       {data && data.length > 0 ? (
         data.map((item) => {
          return (
-            <div className="grid grid-rows-2 grid-cols-2 rounded-md 
+            <div className="grid grid-rows-1 grid-cols-2 rounded-md 
               bg-wa-secondary-bg border border-wa-border mt-5 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
-                <p className='font-bold'> {item.name} </p>
-                <p className="grid grid-rows-subgrid row-start-2 col-span-2"> {item.definition} </p>
+                <p className='font-bold pb-1'> {item.name} </p>
+                <p className="grid grid-rows-subgrid row-start-2 col-span-3"> {item.definition} </p>
                 <button className="grid grid-cols-subgrid col-start-3" onClick = {(e) => {
                   removeItems(e.target.parentElement.id ) 
                   fetchData()}
@@ -141,10 +141,10 @@ function GameExplanation() {
   return (
     <div>
       {isVisible ? (
-        <div className="m-2"> 
-          <p className="mt-2"> You will get a definition, type the word </p>
-          <p className="mb-2"> To start your game, click START GAME button </p>
-          <button className="btn-primary mb-4  mt-4 animate-pulse" onClick={renderGame}> START GAME </button> 
+        <div className="m-4"> 
+          <p className="mt-2 mx-2"> You will get a definition, type the word. </p>
+          <p className="mb-2 mx-2"> Only if your answer is correct, your score will increase by +1 </p>
+          <button className="btn-primary animate-pulse w-full" onClick={renderGame}> START GAME </button> 
         </div>) : null }
       {isClicked ? <Word arr = {data}/>  : null }
     </div>
