@@ -18,7 +18,7 @@ import "./globals.css";
 // };
 
 export const metadata = {
-  title: 'My PWA App',
+  title: 'Wordsgiving',
   description: 'A Progressive Web App built with Next.js',
   // You can add other metadata here
 };
