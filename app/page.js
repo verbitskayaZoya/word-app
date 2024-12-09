@@ -9,14 +9,14 @@ import Image from 'next/image';
 export default function Home() {
   const [pageNum, setPageNum] = useState(0)
   return (
-    <div className= "flex flex-col items-center text-wa-text font-mono h-screen">
+    <div className= "flex flex-col items-center font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
-        <button className="btn-nav border-r-2 border-wa-border"
+        <button className="btn-nav border-r border-wa-border"
               onClick={() => {
                setPageNum(0)
                }} > My cards </button>
-        <button className="btn-nav border-r-2 border-wa-border"
+        <button className="btn-nav border-r border-wa-border"
               onClick={() => {
                setPageNum(2)
                }} > Add a card </button>
@@ -55,7 +55,7 @@ function DisplayCards() {
         data.map((item) => {
          return (
             <div className="grid grid-rows-1 grid-cols-2 rounded-md 
-              bg-wa-secondary-bg border border-wa-border mt-5 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
+              bg-wa-card-bg border border-wa-border my-2 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
                 <p className='font-bold pb-1'> {item.name} </p>
                 <p className="grid grid-rows-subgrid row-start-2 col-span-3"> {item.definition} </p>
                 <button className="grid grid-cols-subgrid col-start-3" onClick = {(e) => {
@@ -85,13 +85,13 @@ function AddCard() {
           id="input-word" 
           type="text" 
           placeholder="Type your word here" 
-          className="border-2 border-wa-border w-11/12 rounded" 
+          className="wa-input" 
           value = { wordInputValue }
           onChange = {e => setWordInputValue(e.target.value) } 
         />
         <textarea id="input-definition"
           placeholder="Type your example here" 
-          className="border-2 border-wa-border w-11/12 h-20 rounded" 
+          className="wa-input h-20" 
           value = {definitionInputValue}
           onChange = {e => setDefinitionInputValue(e.target.value) } 
         /> 
@@ -138,7 +138,7 @@ function GameExplanation() {
   }, []) 
 
   return (
-    <div className="w-11/12">
+    <div className="w-full">
       {isVisible ? (
         <div className="m-4"> 
           <p className="mt-2 mx-2"> You will get a definition, type the word. </p>
@@ -209,12 +209,12 @@ const gameDisplay = useMemo(() => (
                       {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null }
                       <input
                         type="text"
-                        className="border-2 border-wa-border rounded mb-4 w-full text-center" 
+                        className="wa-input mb-4" 
                         placeholder="type the word"
                         value = {nameInputValue}
                         onChange = {e => setNameInputValue(e.target.value) } 
                       />
-                      <button className="btn-primary mb-4 w-full" 
+                      <button className="btn-primary" 
                         onClick={() => {check()}}> Check 
                       </button> 
                     </div>
@@ -288,10 +288,7 @@ useEffect(() => {
 function IncorrectAnswer({answer}) {
   return (
     <div className="text-center m-2">
-      Not quite right! The answer is <span className="font-bold text-xl bg-wa-gold rounded-md py-1 px-2"> {answer}</span>
+      Not quite right! The answer is <span className="wa-gold-bg"> {answer}</span>
     </div>
   )
 }
-
-
-
