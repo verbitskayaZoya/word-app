@@ -261,7 +261,7 @@ useEffect(() => {
 
 useEffect(() => {
    if(answer === 1 && data.length !== 0) {
-    setContent( <p className="text-5xl text-center font-bold mt-8 text-[#F8D112] animate-bounce"> +1 
+    setContent( <p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce"> +1 
                 </p> 
               )
     const timer = setTimeout(() => {
