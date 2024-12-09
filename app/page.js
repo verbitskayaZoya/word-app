@@ -11,6 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center bg-gradient-to-br from-wa-bg-from to-wa-bg-to text-wa-text font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
+      <GetImages />
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r-2 border-wa-border"
               onClick={() => {
@@ -293,5 +294,71 @@ function IncorrectAnswer({answer}) {
   )
 }
 
+// function GetImages() {
+//   const [data, setData] = useState("empty")
+//   console.log("I'm clicked")
+//   useEffect(() => {
+//     const fetchPhotos = async () => {
+//       await fetch("https://api.unsplash.com/search/photos?query=cat", {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'L2rGU_fttEGdmlpbUbpJSlDZNs66OlV5rq3uzBXgK-c'
+//         }
+//       })
+//       const res = await response.json() 
+//       setData(res)
+//       console.log(data)
+//     }
+//   })
+//   console.log(data)
+// }
 
 
+function GetImages () {
+  const [data, setData] = useState(null); // Initialize state to null
+  const [loading, setLoading] = useState(false); // State to manage loading status
+  const [error, setError] = useState(null); // State to manage errors
+
+  const fetchPhotos = async () => {
+      setLoading(true); // Set loading to true when fetching starts
+      try {
+          const response = await fetch("https://api.unsplash.com/search/photos?query=cat",
+            {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Client-ID L2rGU_fttEGdmlpbUbpJSlDZNs66OlV5rq3uzBXgK-c' 
+              }
+          }
+        )
+        
+
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+
+          const res = await response.json();
+          setData(res.results); // Assuming you want the results array
+      } catch (error) {
+          setError(error.message); // Set error message if fetch fails
+      } finally {
+          setLoading(false); // Set loading to false when done
+      }
+  };
+
+  return (
+      <div>
+          <button onClick={fetchPhotos}>Get Images</button>
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error}</p>}
+          {data && (
+              <div>
+                  {data.map((image) => (
+                      <img key={image.id} src={image.urls.small} alt={image.description} />
+                  ))}
+              </div>
+          )}
+      </div>
+  );
+};
