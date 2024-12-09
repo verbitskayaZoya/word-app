@@ -9,7 +9,7 @@ import Image from 'next/image';
 export default function Home() {
   const [pageNum, setPageNum] = useState(0)
   return (
-    <div className= "flex flex-col items-center bg-gradient-to-br from-wa-bg-from to-wa-bg-to text-wa-text font-mono h-screen">
+    <div className= "flex flex-col items-center text-wa-text font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r-2 border-wa-border"
