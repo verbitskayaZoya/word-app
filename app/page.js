@@ -11,6 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
+      {/*  Just for testing  */}
       <GetImages />
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
@@ -362,3 +363,4 @@ function GetImages () {
       </div>
   );
 };
+
