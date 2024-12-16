@@ -185,27 +185,26 @@ function Word({arr}) {
   const [content, setContent] = useState('')
   const [score, setScore] = useState(0)
 
-const imagesNotGoodArr = [
-    {name: "can-do-it.webp", alt: ""},
-    {name: "just-do-it.webp", alt: ""},
-    {name: "not-give-up.webp", alt: ""}, 
+  const imagesNotGoodArr = [
+      {name: "can-do-it.webp", alt: ""},
+      {name: "just-do-it.webp", alt: ""},
+      {name: "not-give-up.webp", alt: ""}, 
   ]
 
-const imagesGoodArr = [
-  {name: "nice.webp", alt: ""},
-  {name: "thumb.webp", alt: ""},
-  {name: "viking-ok.webp", alt: ""}, 
-]
+  const imagesGoodArr = [
+    {name: "nice.webp", alt: ""},
+    {name: "thumb.webp", alt: ""},
+    {name: "viking-ok.webp", alt: ""}, 
+  ]
 
-
-const imagesSuperArr  = [
-  {name: "amazing.webp", alt: ""},
-  {name: "fireworks.webp", alt: ""},
-  {name: "terrific.webp", alt: ""}, 
-  {name: "vietnamese-wow.webp", alt: ""},
-  {name: "viking-perfect.webp", alt: ""},
-  {name: "wow.webp", alt: ""}, 
-]
+  const imagesSuperArr  = [
+    {name: "amazing.webp", alt: ""},
+    {name: "fireworks.webp", alt: ""},
+    {name: "terrific.webp", alt: ""}, 
+    {name: "vietnamese-wow.webp", alt: ""},
+    {name: "viking-perfect.webp", alt: ""},
+    {name: "wow.webp", alt: ""}, 
+  ]
 
 
   function check() {  
@@ -228,77 +227,97 @@ const imagesSuperArr  = [
     } else {
       setAnswer(2)
     }
-}
+  }
  
-const gameDisplay = useMemo(() => (
-                    <div className="w-full text-center">
-                      {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null }
-                      <input
-                        type="text"
-                        className="wa-input mb-4" 
-                        placeholder="type the word"
-                        value = {nameInputValue}
-                        onChange = {e => setNameInputValue(e.target.value) } 
-                      />
-                      <button className="btn-primary" 
-                        onClick={() => {check()}}> Check 
-                      </button> 
-                    </div>
-                      ), [data, index, nameInputValue])
 
-useEffect(() => {
-  if (data.length > 0) {
-    setIndex(Math.floor(Math.random() * data.length))
-   }
-}, [data]) 
-                    
-const [image, setImage] = useState("")
+  
+  
 
-useEffect(() => {
-  if(data.length === 0) {
-    if(score/arr.length > 0.95) {
-      setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
-    } else if(score/arr.length >= 0.6) {
-      setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
-    } else {
-      setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
+
+
+  const gameDisplay = useMemo(() => 
+    
+    const InputField = () => {
+      // Создаем ссылку на элемент поля ввода
+      const inputRef = useRef(null);
+    
+      // Устанавливаем фокус на поле ввода при монтировании компонента
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, []);
+    
+    (
+      <div className="w-full text-center">
+        {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null}
+        <input
+          type="text"
+          ref={inputRef} // Привязываем ссылку к полю ввода
+          className="wa-input mb-4"
+          placeholder="type the word"
+          value={nameInputValue}
+          onChange={e => setNameInputValue(e.target.value)}
+        />
+        <button className="btn-primary"
+          onClick={() => { check() }}> Check
+        </button>
+      </div>
+    ), [data, index, nameInputValue])
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setIndex(Math.floor(Math.random() * data.length))
     }
-  }
-}, [data])
+  }, [data]) 
+                      
+  const [image, setImage] = useState("")
 
-useEffect(() => {
-  setContent( <>
-    <div className="m-6 text-xl text-center font-bold"> Game is finished! 
-      Your score is {score} out of {arr.length}. 
-    </div>
-    <Image 
-      src={`/images/${image}`}
-      alt="good job"
-      width={300}
-      height={300}
-      className="md:w-auto md:h-auto m-auto"
-      unoptimized
-    />
-</>
-)
-}, [image])
+  useEffect(() => {
+    if(data.length === 0) {
+      if(score/arr.length > 0.95) {
+        setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
+      } else if(score/arr.length >= 0.6) {
+        setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
+      } else {
+        setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
+      }
+    }
+  }, [data])
+
+  useEffect(() => {
+    setContent( <>
+      <div className="m-6 text-xl text-center font-bold"> Game is finished! 
+        Your score is {score} out of {arr.length}. 
+      </div>
+      <Image 
+        src={`/images/${image}`}
+        alt="good job"
+        width={300}
+        height={300}
+        className="md:w-auto md:h-auto m-auto"
+        unoptimized
+      />
+  </>
+  )
+  }, [image])
 
 
 
-useEffect(() => {
-   if(answer === 1 && data.length !== 0) {
-    setContent( <p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce"> +1 
-                </p> 
-              )
-    const timer = setTimeout(() => {
-      setContent ( gameDisplay )
-      setAnswer(0)
-    }, 1000)
-    return () => clearTimeout(timer)
-  } else {
-    setContent( gameDisplay )
-  }
-}, [answer, gameDisplay])
+  useEffect(() => {
+    if(answer === 1 && data.length !== 0) {
+      setContent( <p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce"> +1 
+                  </p> 
+                )
+      const timer = setTimeout(() => {
+        setContent ( gameDisplay )
+        setAnswer(0)
+      }, 1000)
+      return () => clearTimeout(timer)
+    } else {
+      setContent( gameDisplay )
+    }
+  }, [answer, gameDisplay])
 
   return (
     <div className="w-full">
