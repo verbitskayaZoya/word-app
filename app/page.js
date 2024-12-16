@@ -134,7 +134,7 @@ function AddCard() {
         /> 
         <button className="btn-primary"> Find image </button>
         <div> Images </div>
-        <p> OR if you don't fancy images, paste your image url below: </p>
+        <p> OR if you do not fancy images, paste your image url below: </p>
         <input
           type="text"
           className="wa-input"
