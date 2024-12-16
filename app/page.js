@@ -12,8 +12,6 @@ export default function Home() {
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
-      {/*  Just for testing  */}
-      <GetImages />
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -81,6 +79,9 @@ function DisplayCards() {
     <div className="grid grid-cols-1 md:grid-cols-2 grid-flow-row justify-items-center">
       {data && data.length > 0 ? (
         data.map((item) => {
+          if (item.imageurl === null) {
+            item.imageurl = "/apple-touch-icon.png";
+          }
          return (
             <div className="grid grid-rows-1 grid-cols-2 rounded-md 
               bg-wa-card-bg border border-wa-border my-2 w-11/12 min-h-24 p-2 opacity-90 md:w-10/12" key={item.id} id={item.id}>
@@ -90,6 +91,13 @@ function DisplayCards() {
                   removeItems(e.target.parentElement.id ) 
                   fetchData()}
                   }>  ❌ </button> 
+                <Image
+                  src={item.imageurl}
+                  alt="A cat's body language"
+                  width={300}
+                  height={300}
+                  className="md:w-auto md:h-auto m-auto"
+              />
             </div>
           )
         })
@@ -105,6 +113,7 @@ function DisplayCards() {
 function AddCard() {
   const [wordInputValue, setWordInputValue] = useState("")
   const [definitionInputValue, setDefinitionInputValue] = useState("")
+  const [imageURLValue, setImageURLValue] = useState("")
   const id = uuidv4()
 
   return ( 
@@ -123,15 +132,26 @@ function AddCard() {
           value = {definitionInputValue}
           onChange = {e => setDefinitionInputValue(e.target.value) } 
         /> 
+        <button className="btn-primary"> Find image </button>
+        <div> Images </div>
+        <p> OR if you don't fancy images, paste your image url below: </p>
+        <input
+          type="text"
+          className="wa-input"
+          placeholder="Paste your image url here"
+          value={imageURLValue}
+          onChange={(e) => setImageURLValue(e.target.value)}
+        />
         <button className="btn-primary"
          onClick = {() => { 
                 if(wordInputValue === "" || definitionInputValue === "") {
                   alert("Make sure your word and example are entered")
                 } else {
-                  create(id, wordInputValue.toLowerCase(), definitionInputValue) 
+                  create(id, wordInputValue.toLowerCase(), definitionInputValue, imageURLValue) 
                 }
                 setWordInputValue('')
                 setDefinitionInputValue('')
+                setImageURLValue("")
                }} > 
         Save </button> 
       </div>
