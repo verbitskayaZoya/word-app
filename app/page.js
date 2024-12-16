@@ -232,9 +232,12 @@ function Word({arr}) {
 
   const inputElement = useRef();
 
-  const focusInput = () => {
+  useEffect(() => {
     inputElement.current.focus();
-  };
+  })
+  // const focusInput = () => {
+  
+  // };
   
 
   const gameDisplay = useMemo(() => (
@@ -250,7 +253,6 @@ function Word({arr}) {
       />
       <button className="btn-primary" onClick={() => {
         check();
-        focusInput()
       }}> Check </button>
     </div>
   ), [data, index, nameInputValue]);
