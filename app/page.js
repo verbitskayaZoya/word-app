@@ -10,6 +10,7 @@ export default function Home() {
   const [pageNum, setPageNum] = useState(0)
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
+      <ThemeColorUpdater />
       <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
       {/*  Just for testing  */}
       <GetImages />
@@ -32,6 +33,31 @@ export default function Home() {
     </div>
   )
 }
+
+
+const ThemeColorUpdater = () => {
+  
+  useEffect(() => {  
+    const updateThemeColor = () => {
+      const themeColorMeta = document.getElementById('theme-color-meta');
+      const bg = getComputedStyle(document.documentElement).getPropertyValue('--background').trim();
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', bg);
+      }
+    };
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    updateThemeColor();
+
+    mediaQuery.addEventListener('change', updateThemeColor);
+
+    return () => {
+      mediaQuery.removeEventListener('change', updateThemeColor);
+    };
+  }, []);
+
+  return null; 
+};
 
 
 function DisplayCards() {

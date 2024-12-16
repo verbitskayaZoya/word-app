@@ -28,6 +28,7 @@ export default function RootLayout({ children }) {
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-title" content="Words" />
+        <meta name="theme-color" content="#ffffff" id="theme-color-meta" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body
