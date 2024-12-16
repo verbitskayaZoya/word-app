@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
-      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 2 🏋  </h1>
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 3 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -230,28 +230,28 @@ function Word({arr}) {
   }
  
 
+  const inputElement = useRef();
 
-  const inputRef = useRef(null);
-
-  // Устанавливаем фокус на поле ввода при монтировании компонента
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+  const focusInput = () => {
+    inputElement.current.focus();
+  };
+  
 
   const gameDisplay = useMemo(() => (
     <div className="w-full text-center">
       {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null}
       <input
         type="text"
-        ref={inputRef} // Привязываем ссылку к полю ввода
+        ref={inputElement} // Привязываем ссылку к полю ввода
         className="wa-input mb-4"
         placeholder="type the word"
         value={nameInputValue}
         onChange={e => setNameInputValue(e.target.value)}
       />
-      <button className="btn-primary" onClick={check}> Check </button>
+      <button className="btn-primary" onClick={() => {
+        check();
+        focusInput()
+      }}> Check </button>
     </div>
   ), [data, index, nameInputValue]);
 
