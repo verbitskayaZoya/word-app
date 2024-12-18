@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
-      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 8 🏋  </h1>
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 9 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -171,12 +171,12 @@ function GameExplanation() {
           <p className="mb-2 mx-2"> Only if your answer is correct, your score will increase by +1 </p>
           <button className="btn-primary animate-pulse w-full" onClick={renderGame}> START GAME </button> 
         </div>) : null }
-      {isClicked ? <Word arr = {data}/>  : null }
+      {isClicked ? <Game_1 arr = {data}/>  : null }
     </div>
   )
 }
 
-function Word({arr}) {
+function Game_1({arr}) {
   const [index, setIndex] = useState(0)
   const [nameInputValue, setNameInputValue] = useState("")
   const [answer, setAnswer] = useState(0)
