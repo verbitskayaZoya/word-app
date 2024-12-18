@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
-      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 9 🏋  </h1>
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 10 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -176,155 +176,100 @@ function GameExplanation() {
   )
 }
 
-function Game_1({arr}) {
-  const [index, setIndex] = useState(0)
-  const [nameInputValue, setNameInputValue] = useState("")
-  const [answer, setAnswer] = useState(0)
-  const [data, setData] = useState(arr)
-  const [answerValue, setAnswerValue] = useState("")
-  const [content, setContent] = useState('')
-  const [score, setScore] = useState(0)
-
-  const imagesNotGoodArr = [
-      {name: "can-do-it.webp", alt: ""},
-      {name: "just-do-it.webp", alt: ""},
-      {name: "not-give-up.webp", alt: ""}, 
-  ]
-
-  const imagesGoodArr = [
-    {name: "nice.webp", alt: ""},
-    {name: "thumb.webp", alt: ""},
-    {name: "viking-ok.webp", alt: ""}, 
-  ]
-
-  const imagesSuperArr  = [
-    {name: "amazing.webp", alt: ""},
-    {name: "fireworks.webp", alt: ""},
-    {name: "terrific.webp", alt: ""}, 
-    {name: "vietnamese-wow.webp", alt: ""},
-    {name: "viking-perfect.webp", alt: ""},
-    {name: "wow.webp", alt: ""}, 
-  ]
-
-
-  function check() {  
-    setNameInputValue("")
-    setAnswerValue(data[index].name)
-
-    if(data[index].name === nameInputValue.toLowerCase()) {
-      setAnswer(prevState => {
-        if(prevState !== 2)  {
-          setScore(score + 1)
-          return 1
-        } 
-      })
-      const result = () => {
-        return data.filter((item) => {
-          return item.name !== data[index].name
-        })
-      }
-      setData(result())
-    } else {
-      setAnswer(2)
-    }
-  }
- 
-
+function Game_1({ arr }) {
+  const [index, setIndex] = useState(0);
+  const [nameInputValue, setNameInputValue] = useState("");
+  const [answer, setAnswer] = useState(0);
+  const [data, setData] = useState(arr);
+  const [answerValue, setAnswerValue] = useState("");
+  const [content, setContent] = useState('');
+  const [score, setScore] = useState(0);
   const inputElement = useRef();
 
-  useEffect(() => {
-    if (inputElement.current) {
-      inputElement.current.focus();
+  const imagesNotGoodArr = [
+    { name: "can-do-it.webp", alt: "" },
+    { name: "just-do-it.webp", alt: "" },
+    { name: "not-give-up.webp", alt: "" },
+  ];
+
+  const imagesGoodArr = [
+    { name: "nice.webp", alt: "" },
+    { name: "thumb.webp", alt: "" },
+    { name: "viking-ok.webp", alt: "" },
+  ];
+
+  const imagesSuperArr = [
+    { name: "amazing.webp", alt: "" },
+    { name: "fireworks.webp", alt: "" },
+    { name: "terrific.webp", alt: "" },
+    { name: "vietnamese-wow.webp", alt: "" },
+    { name: "viking-perfect.webp", alt: "" },
+    { name: "wow.webp", alt: "" },
+  ];
+
+  function check() {
+    setAnswerValue(data[index].name);
+    if (data[index].name === nameInputValue.toLowerCase()) {
+      setScore(prevScore => prevScore + 1);
+      const result = data.filter((item) => item.name !== data[index].name);
+      setData(result);
+      setAnswer(1);
+    } else {
+      setAnswer(2);
     }
-
-  })
-  // const focusInput = () => {
-  
-  // };
-  
-
-  const gameDisplay = useMemo(() => (
-    <div className="w-full text-center">
-      {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null}
-      <input
-        type="text"
-        ref={inputElement} // Привязываем ссылку к полю ввода
-        className="wa-input mb-4"
-        placeholder="type the word"
-        value={nameInputValue}
-        onChange={e => setNameInputValue(e.target.value)}
-      />
-      <button className="btn-primary" onClick={() => {
-        check();
-      }}> Check </button>
-    </div>
-  ), [data, index, nameInputValue]);
-
-
-
+    setNameInputValue(""); // Очищаем поле ввода
+  }
 
   useEffect(() => {
     if (data.length > 0) {
-      setIndex(Math.floor(Math.random() * data.length))
+      setIndex(Math.floor(Math.random() * data.length));
     }
-  }, [data]) 
-                      
-  const [image, setImage] = useState("")
+  }, [data]);
 
   useEffect(() => {
-    if(data.length === 0) {
-      if(score/arr.length > 0.95) {
-        setImage(imagesSuperArr[Math.floor(Math.random() * imagesSuperArr.length)].name) 
-      } else if(score/arr.length >= 0.6) {
-        setImage(imagesGoodArr[Math.floor(Math.random() * imagesGoodArr.length)].name)
-      } else {
-        setImage(imagesNotGoodArr[Math.floor(Math.random() * imagesNotGoodArr.length)].name)
-      }
+    if (inputElement.current) {
+      inputElement.current.focus(); // Устанавливаем фокус на поле ввода
     }
-  }, [data])
+  }, [data, answer]); // Устанавливаем фокус при изменении данных или ответа
 
-  useEffect(() => {
-    setContent( <>
-      <div className="m-6 text-xl text-center font-bold"> Game is finished! 
-        Your score is {score} out of {arr.length}. 
+  const gameDisplay = useMemo(() => {
+    return (
+      <div className="w-full text-center">
+        {data[index] ? <p className="mx-2 my-4 w-full">{data[index].definition}</p> : null}
+        <input
+          type="text"
+          ref={inputElement} // Привязываем ссылку к полю ввода
+          className="wa-input mb-4"
+          placeholder="type the word"
+          value={nameInputValue}
+          onChange={e => setNameInputValue(e.target.value)}
+        />
+        <button className="btn-primary" onClick={check}>Check</button>
       </div>
-      <Image 
-        src={`/images/${image}`}
-        alt="good job"
-        width={300}
-        height={300}
-        className="md:w-auto md:h-auto m-auto"
-        unoptimized
-      />
-  </>
-  )
-  }, [image])
-
-
+    );
+  }, [data, index, nameInputValue]);
 
   useEffect(() => {
-    if(answer === 1 && data.length !== 0) {
-      setContent( <p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce"> +1 
-                  </p> 
-                )
+    if (answer === 1 && data.length !== 0) {
+      setContent(<p className="text-5xl text-center font-bold mt-8 text-wa-gold animate-bounce">+1</p>);
       const timer = setTimeout(() => {
-        setContent ( gameDisplay )
-        setAnswer(0)
-      }, 1000)
-      return () => clearTimeout(timer)
+        setContent(gameDisplay);
+        setAnswer(0);
+      }, 1000);
+      return () => clearTimeout(timer);
     } else {
-      setContent( gameDisplay )
+      setContent(gameDisplay);
     }
-  }, [answer, gameDisplay])
+  }, [answer, gameDisplay]);
 
   return (
     <div className="w-full">
       {content}
       <div>
-        {answer === 2 ?  <IncorrectAnswer answer={answerValue} /> : null}
-      </div> 
+        {answer === 2 ? <IncorrectAnswer answer={answerValue} /> : null}
+      </div>
     </div>
-  )
+  );
 }
 
 
