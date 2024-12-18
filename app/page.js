@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
-      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 10 🏋  </h1>
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> pre 11 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -227,10 +227,14 @@ function Game_1({ arr }) {
   }, [data]);
 
   useEffect(() => {
-    if (inputElement.current) {
-      inputElement.current.focus(); // Устанавливаем фокус на поле ввода
-    }
-  }, [data, answer]); // Устанавливаем фокус при изменении данных или ответа
+    const timer = setTimeout(() => {
+      if (inputElement.current) {
+        inputElement.current.focus(); // Устанавливаем фокус на поле ввода
+      }
+    }, 100); // Задержка в 100 мс
+  
+    return () => clearTimeout(timer);
+  }, [data, answer]);
 
   const gameDisplay = useMemo(() => {
     return (
