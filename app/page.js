@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
-      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl px-4 py-2 bg-wa-card-bg rounded-md opacity-90" id="title"> My word app 🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -232,7 +232,7 @@ const imagesSuperArr  = [
  
 const gameDisplay = useMemo(() => (
                     <div className="w-full text-center">
-                      {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null }
+                      {data[index] ? <p className="mx-2 my-4 mx-auto w-11/12 py-2 bg-wa-card-bg rounded-md opacity-90"> {data[index].definition} </p> : null }
                       <input
                         type="text"
                         className="wa-input mb-4" 
