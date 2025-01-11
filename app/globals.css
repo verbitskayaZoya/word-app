@@ -5,16 +5,16 @@
 :root {
   --background:       #ffffff;
   --foreground:       #171717;
-  --wa-card-bg:       #F9E9DA;
-  --wa-btn-bg:        #F9B7A9;
-  --wa-btn-bg-hover:  tomato;
-  --wa-btn-text:      #171717;
+  --wa-card-bg:       #FAFBFD;
+  --wa-btn-bg:        #4CA3E3;
+  --wa-btn-bg-hover:  #3B83C3;
+  --wa-btn-text:      #ffffff;
 
-  --wa-border:        tomato;
+  --wa-border:        #e3e4e7;
   --wa-gold:          #F8D112;
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
     --background:       #0a0a0a;
     --foreground:       #ededed;
@@ -23,12 +23,11 @@
     --wa-btn-bg-hover:  #e3e4e7;
     --wa-btn-text:      #0a0a0a;
   }
-} */
+}
 
 body {
   color: var(--foreground);
   background: var(--background);
-  background-image: url(https://i.pinimg.com/564x/b7/14/e8/b714e841e1cae73293e0ea3420aaf11d.jpg);
   font-family: Arial, Helvetica, sans-serif;
 }
 
