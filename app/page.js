@@ -1,6 +1,6 @@
 
 'use client'
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { create, select, removeItems } from '/app/actions'
 // import { Suspense } from 'react'
 import { v4 as uuidv4 } from 'uuid';
@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className= "flex flex-col items-center font-mono h-screen">
       <ThemeColorUpdater />
-      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 🏋  </h1>
+      <h1 className= "text-center mt-6 mb-4 italic font-bold text-xl " id="title"> My word app 1🏋  </h1>
       <div className="w-11/12 flex justify-between mb-2 h-10">
         <button className="btn-nav border-r border-wa-border"
               onClick={() => {
@@ -185,6 +185,8 @@ function Word({arr}) {
   const [content, setContent] = useState('')
   const [score, setScore] = useState(0)
 
+  const inputRef = useRef(null); // Добавляем реф
+
 const imagesNotGoodArr = [
     {name: "can-do-it.webp", alt: ""},
     {name: "just-do-it.webp", alt: ""},
@@ -234,6 +236,8 @@ const gameDisplay = useMemo(() => (
                     <div className="w-full text-center">
                       {data[index] ? <p className="mx-2 my-4 w-full"> {data[index].definition} </p> : null }
                       <input
+                        ref={inputRef} // Привязываем реф к input
+                        {...isMobile && { autoFocus: true }}
                         type="text"
                         className="wa-input mb-4" 
                         placeholder="type the word"
@@ -245,6 +249,14 @@ const gameDisplay = useMemo(() => (
                       </button> 
                     </div>
                       ), [data, index, nameInputValue])
+
+// Добавляем useEffect для фокусировки
+useEffect(() => {
+  const isMobile = /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent);
+  if (isMobile && inputRef.current) {
+    inputRef.current.focus();
+  }
+}, []);
 
 useEffect(() => {
   if (data.length > 0) {
